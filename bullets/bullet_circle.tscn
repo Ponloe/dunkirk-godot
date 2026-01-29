@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://wgta8evh3x36"]
 
-[ext_resource type="Script" uid="uid://butrk8uqdev1y" path="res://bullet_circle.gd" id="1_8widk"]
-[ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shader.gdshader" id="1_lpo65"]
+[ext_resource type="Script" uid="uid://butrk8uqdev1y" path="res://bullets/bullet_circle.gd" id="1_8widk"]
+[ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shaders/shader.gdshader" id="1_lpo65"]
 [ext_resource type="Texture2D" uid="uid://dub4ti8835uqu" path="res://assets/PixelPlanesAssetPack.png" id="2_8widk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3epju"]
