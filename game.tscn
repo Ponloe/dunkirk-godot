@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=5 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://b1jloktcoe5y4" path="res://background/parallax_background.gd" id="2_fc0e3"]
+[ext_resource type="Texture2D" uid="uid://ovy0sfn7y7i1" path="res://assets/Clouds/Clouds 1/1.png" id="2_feb5d"]
+[ext_resource type="Texture2D" uid="uid://b8gtgf6mh3ycl" path="res://assets/Clouds/Clouds 1/2.png" id="3_fc0e3"]
 
 [node name="Game" type="Node2D"]
 
@@ -10,3 +13,21 @@ position = Vector2(286, 164)
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(287, 161)
 zoom = Vector2(2, 2)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("2_fc0e3")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(0, 300)
+
+[node name="bg" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(1, 1)
+scale = Vector2(0.99739575, 0.9984567)
+texture = ExtResource("2_feb5d")
+centered = false
+
+[node name="clouds" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(3.9999998, -1)
+scale = Vector2(0.9913194, 1.0030864)
+texture = ExtResource("3_fc0e3")
+centered = false
