@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bre20liwnu81o"]
+[gd_scene load_steps=6 format=3 uid="uid://bre20liwnu81o"]
 
 [ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shaders/shader.gdshader" id="1_onrkg"]
 [ext_resource type="Script" uid="uid://bbpvcpwhujaed" path="res://player_plane/player.gd" id="2_hqtel"]
 [ext_resource type="Texture2D" uid="uid://dub4ti8835uqu" path="res://assets/PixelPlanesAssetPack.png" id="2_i3pqv"]
-[ext_resource type="PackedScene" uid="uid://wgta8evh3x36" path="res://bullets/bullet_circle.tscn" id="3_hqtel"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hqtel"]
 shader = ExtResource("1_onrkg")
@@ -13,22 +12,23 @@ shader_parameter/remove_color = Color(0, 0, 0, 1)
 shader = ExtResource("1_onrkg")
 shader_parameter/remove_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_sweqy"]
-radius = 11.0
-
-[node name="player" type="CharacterBody2D"]
+[node name="player" type="CharacterBody2D" groups=["player"]]
 material = SubResource("ShaderMaterial_hqtel")
+collision_mask = 2
 script = ExtResource("2_hqtel")
-bullet_scene = ExtResource("3_hqtel")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_sweqy")
-position = Vector2(0, 2.3841858e-07)
-scale = Vector2(0.87508976, 0.7789631)
+position = Vector2(0, -9.536743e-07)
+scale = Vector2(3.60443, 3.5785093)
 texture = ExtResource("2_i3pqv")
 region_enabled = true
 region_rect = Rect2(97, 65, 30, 30)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_sweqy")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, 25, -14, 25, -14, 22, -18, 22, -18, 18, -15, 18, -14, 15, -11, 11, -11, -4, -39, -4, -46, -11, -46, -18, -39, -25, -18, -25, -18, -29, -11, -29, -11, -47, 11, -47, 11, -29, 19, -29, 19, -25, 39, -25, 46, -18, 46, -11, 40, -3, 10, -4, 10, 10, 14, 14, 14, 17, 18, 18, 18, 21, 15, 22, 14, 25)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(0, -50)
+gizmo_extents = 14.0

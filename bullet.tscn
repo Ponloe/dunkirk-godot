@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgeq20smp7vud"]
+
+[ext_resource type="Script" uid="uid://b8kwbna05i6c5" path="res://script/bullet.gd" id="1_t4vbm"]
+[ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shaders/shader.gdshader" id="2_2b2rl"]
+[ext_resource type="Texture2D" uid="uid://dub4ti8835uqu" path="res://assets/PixelPlanesAssetPack.png" id="3_b7duk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t2bd8"]
+shader = ExtResource("2_2b2rl")
+shader_parameter/remove_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h0pa3"]
+radius = 13.0
+height = 26.0
+
+[node name="bullet" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_t4vbm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_t2bd8")
+position = Vector2(0, -12.999998)
+scale = Vector2(3.03125, 3.2734373)
+texture = ExtResource("3_b7duk")
+region_enabled = true
+region_rect = Rect2(168, 20, 8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("CapsuleShape2D_h0pa3")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-9, -4)
+rect = Rect2(-3, 7, 24, 2)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

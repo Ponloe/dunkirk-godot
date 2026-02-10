@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://x1pklntmdmdu"]
+
+[ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shaders/shader.gdshader" id="1_gl7bs"]
+[ext_resource type="Texture2D" uid="uid://dub4ti8835uqu" path="res://assets/PixelPlanesAssetPack.png" id="2_mgp66"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7smgm"]
+shader = ExtResource("1_gl7bs")
+shader_parameter/remove_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0fnnj"]
+radius = 3.0
+
+[node name="EnemyBullet" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_7smgm")
+position = Vector2(-1.1920929e-07, 0)
+scale = Vector2(0.74999994, 0.8125)
+texture = ExtResource("2_mgp66")
+region_enabled = true
+region_rect = Rect2(167, 20, 10, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0fnnj")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+rect = Rect2(-4, -3, 8, 6)

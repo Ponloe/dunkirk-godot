@@ -9,7 +9,7 @@ shader = ExtResource("1_lpo65")
 shader_parameter/remove_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3mnpf"]
-size = Vector2(6, 6)
+size = Vector2(3.25, 3)
 
 [node name="bullet_circle" type="Area2D"]
 script = ExtResource("1_8widk")
@@ -17,6 +17,7 @@ script = ExtResource("1_8widk")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 material = SubResource("ShaderMaterial_3epju")
+scale = Vector2(0.75000006, 0.6874999)
 texture = ExtResource("2_8widk")
 region_enabled = true
 region_rect = Rect2(200, 20, 8, 8)
@@ -25,4 +26,7 @@ region_rect = Rect2(200, 20, 8, 8)
 shape = SubResource("RectangleShape2D_3mnpf")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-rect = Rect2(-3, -3, 6, 6)
+position = Vector2(2, 1)
+rect = Rect2(-4, -3, 4, 4)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

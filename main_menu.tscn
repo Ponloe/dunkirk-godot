@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://hk0b3uybojwt"]
+
+[ext_resource type="Script" uid="uid://di7il7kjdhl8k" path="res://script/main_menu.gd" id="1_06t4h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7vrkn"]
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+
+[node name="MainMenu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_06t4h")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label (SKY ATTACK)" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Dunkirk: Battle of The Skies"
+label_settings = SubResource("LabelSettings_7vrkn")
+
+[node name="Button Endless" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Endless"
+
+[node name="Button Mission" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mission"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button Endless" to="." method="_on_button_endless_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button Mission" to="." method="_on_button_mission_pressed"]

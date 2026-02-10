@@ -1,33 +1,24 @@
 [gd_scene load_steps=5 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
-[ext_resource type="Script" uid="uid://b1jloktcoe5y4" path="res://background/parallax_background.gd" id="2_fc0e3"]
-[ext_resource type="Texture2D" uid="uid://ovy0sfn7y7i1" path="res://assets/Clouds/Clouds 1/1.png" id="2_feb5d"]
-[ext_resource type="Texture2D" uid="uid://b8gtgf6mh3ycl" path="res://assets/Clouds/Clouds 1/2.png" id="3_fc0e3"]
+[ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
+[ext_resource type="PackedScene" uid="uid://dgeq20smp7vud" path="res://bullet.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="4_fc0e3"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_feb5d")
 
 [node name="player" parent="." instance=ExtResource("1_80nbo")]
-position = Vector2(286, 164)
+position = Vector2(259, 485)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(287, 161)
-zoom = Vector2(2, 2)
+[node name="PlayerSpawnPos" type="Marker2D" parent="."]
+position = Vector2(275, 865)
+gizmo_extents = 30.0
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-script = ExtResource("2_fc0e3")
+[node name="bullet" parent="." instance=ExtResource("2_feb5d")]
+visible = false
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2(0, 300)
+[node name="BulletContainer" type="Node2D" parent="."]
 
-[node name="bg" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(1, 1)
-scale = Vector2(0.99739575, 0.9984567)
-texture = ExtResource("2_feb5d")
-centered = false
-
-[node name="clouds" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(3.9999998, -1)
-scale = Vector2(0.9913194, 1.0030864)
-texture = ExtResource("3_fc0e3")
-centered = false
+[node name="Enemy" parent="." instance=ExtResource("4_fc0e3")]
+position = Vector2(145, 85)
