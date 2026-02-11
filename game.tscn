@@ -1,12 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=6 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
-[ext_resource type="PackedScene" uid="uid://dgeq20smp7vud" path="res://bullet.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://br8sxenq5s663" path="res://enemy/diver_enemy.tscn" id="3_fc0e3"]
+[ext_resource type="PackedScene" uid="uid://5i67floq2vy4" path="res://menu_assets/hud.tscn" id="4_7jktm"]
 [ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="4_fc0e3"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_feb5d")
+enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3")])
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UILayer" instance=ExtResource("4_7jktm")]
+
+[node name="EnemySpawnTimer" type="Timer" parent="."]
+autostart = true
 
 [node name="player" parent="." instance=ExtResource("1_80nbo")]
 position = Vector2(259, 485)
@@ -15,10 +24,8 @@ position = Vector2(259, 485)
 position = Vector2(275, 865)
 gizmo_extents = 30.0
 
-[node name="bullet" parent="." instance=ExtResource("2_feb5d")]
-visible = false
-
 [node name="BulletContainer" type="Node2D" parent="."]
 
-[node name="Enemy" parent="." instance=ExtResource("4_fc0e3")]
-position = Vector2(145, 85)
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

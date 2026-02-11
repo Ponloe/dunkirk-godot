@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://br8sxenq5s663"]
+
+[ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="1_qvdjg"]
+
+[node name="DiverEnemy" instance=ExtResource("1_qvdjg")]
+speed = 300
+hp = 1
+points = 100
+
+[node name="Sprite2D" parent="." index="0"]
+region_rect = Rect2(33, 1, 30, 30)

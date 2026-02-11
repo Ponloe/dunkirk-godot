@@ -15,6 +15,7 @@ radius = 31.016125
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_5p6bu")
+hp = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -31,8 +32,8 @@ position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_80fio")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(-9, -65)
-rect = Rect2(-10, 1, 38, 9)
+position = Vector2(-5, -65)
+rect = Rect2(-4, -7, 19, 19)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
