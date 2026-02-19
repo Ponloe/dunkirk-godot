@@ -1,6 +1,7 @@
 class_name Player extends CharacterBody2D
 
 signal bullet_shot(bullet_scene, location)
+signal killed 
 
 @export var speed = 300
 @export var rate_of_fire = 0.2
@@ -31,4 +32,5 @@ func shoot():
 	bullet_shot.emit(bullet_scene, muzzle.global_position )
 	
 func die():
+	killed.emit()
 	queue_free()

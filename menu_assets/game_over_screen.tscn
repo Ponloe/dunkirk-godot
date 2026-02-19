@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddabs7a5atycs"]
+[gd_scene load_steps=7 format=3 uid="uid://ddabs7a5atycs"]
 
+[ext_resource type="Script" uid="uid://tn6ihhbu5tem" path="res://menu_assets/game_over_screen.gd" id="1_kw64r"]
 [ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="1_ugfv1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kw64r"]
@@ -11,7 +12,7 @@ corner_radius_bottom_left = 25
 
 [sub_resource type="LabelSettings" id="LabelSettings_tgg6y"]
 font = ExtResource("1_ugfv1")
-font_size = 45
+font_size = 60
 
 [sub_resource type="LabelSettings" id="LabelSettings_gl671"]
 font = ExtResource("1_ugfv1")
@@ -28,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_kw64r")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -45,10 +47,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -222.0
-offset_top = -310.0
-offset_right = 224.0
-offset_bottom = 193.0
+offset_left = -220.0
+offset_top = -280.0
+offset_right = 226.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kw64r")
@@ -67,7 +69,7 @@ text = "Game Over"
 label_settings = SubResource("LabelSettings_tgg6y")
 horizontal_alignment = 1
 
-[node name="High Score" type="Label" parent="Panel"]
+[node name="HighScore" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -96,6 +98,21 @@ label_settings = SubResource("LabelSettings_tlhp2")
 horizontal_alignment = 1
 
 [node name="RestartButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.0
+offset_top = 93.0
+offset_right = 94.0
+offset_bottom = 142.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_ugfv1")
+theme_override_font_sizes/font_size = 25
+text = "RETRY
+"
+
+[connection signal="pressed" from="Panel/RestartButton" to="." method="_on_restart_button_pressed"]
