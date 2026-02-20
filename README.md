@@ -110,6 +110,7 @@ AI tools were used to assist with:
 - Documentation drafting (GPT + Perplexity)
 - Iterative design planning (GPT)
 - Google Form Questions (Grok)
+- Drafting message to send out for beta testing
 - Small bug fixes in the code (Claude)
 
 ---
