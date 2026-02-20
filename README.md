@@ -8,6 +8,7 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 ---
 ## Link for gameplay
 - https://youtu.be/rWm5cBLhl1o
+- Beta test - https://jazzy-stardust-ed12e1.netlify.app/dunkirk.html
 
 ## Link for google form
 - https://forms.gle/pnWv7vsZuZbKd1AH8
