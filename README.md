@@ -6,7 +6,11 @@ The game places the player in the cockpit of an elite pilot squadron tasked with
 This project explores classic arcade mechanics combined with pixel-art visuals and modern game development tools.
 
 ---
+## Link for gameplay
+- https://youtu.be/rWm5cBLhl1o
 
+## Link for google form
+- https://forms.gle/pnWv7vsZuZbKd1AH8
 ## Visual Style & Theme
 
 ### Visual Style
@@ -101,11 +105,11 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 ## AI Usage
 
 AI tools were used to assist with:
-- Concept discussion and refinement
-- Documentation drafting
-- Iterative design planning
-
-All gameplay logic, implementation, and final development decisions were completed manually.
+- Concept discussion and refinement (Gemini + GPT)
+- Documentation drafting (GPT + Perplexity)
+- Iterative design planning (GPT)
+- Google Form Questions (Grok)
+- Small bug fixes in the code (Claude)
 
 ---
 
