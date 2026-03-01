@@ -1,35 +1,93 @@
-[gd_scene load_steps=3 format=3 uid="uid://hk0b3uybojwt"]
+[gd_scene load_steps=5 format=3 uid="uid://b0hpjmhh2q4mt"]
 
-[ext_resource type="Script" uid="uid://di7il7kjdhl8k" path="res://script/main_menu.gd" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://c1tg8k2nnnshs" path="res://main_menu.gd" id="1_5gaqd"]
+[ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="2_u2k3h"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_7vrkn"]
-font_size = 40
-font_color = Color(0, 0, 0, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_bppw2"]
+font = ExtResource("2_u2k3h")
+font_size = 45
 
-[node name="MainMenu" type="CanvasLayer"]
-process_mode = 3
-script = ExtResource("1_06t4h")
+[sub_resource type="LabelSettings" id="LabelSettings_v4lx4"]
+font = ExtResource("2_u2k3h")
+font_size = 20
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="MainMenu" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5gaqd")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-layout_mode = 2
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5372549)
 
-[node name="Label (SKY ATTACK)" type="Label" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Dunkirk: Battle of The Skies"
-label_settings = SubResource("LabelSettings_7vrkn")
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Button Endless" type="Button" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Endless"
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.07777778
+anchor_top = 0.28441668
+anchor_right = 0.9203704
+anchor_bottom = 0.308375
+offset_left = -20.0
+offset_top = -23.04
+offset_right = 20.0
+offset_bottom = -0.040000916
+grow_horizontal = 2
+text = "Dunkirk Battle of The Skies"
+label_settings = SubResource("LabelSettings_bppw2")
+metadata/_edit_use_anchors_ = true
 
-[node name="Button Mission" type="Button" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Mission"
+[node name="Controls" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.38518518
+anchor_top = 0.37395832
+anchor_right = 0.64074075
+anchor_bottom = 0.48854166
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Controls 
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Button Endless" to="." method="_on_button_endless_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Button Mission" to="." method="_on_button_mission_pressed"]
+WASD to Move
+Space to Shoot"
+label_settings = SubResource("LabelSettings_v4lx4")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="StartButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4112963
+anchor_top = 0.5699584
+anchor_right = 0.6203704
+anchor_bottom = 0.5989583
+offset_left = -0.1000061
+offset_top = -0.16003418
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_u2k3h")
+theme_override_font_sizes/font_size = 24
+text = "Start Game"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="Panel/StartButton" to="." method="_on_start_button_pressed"]

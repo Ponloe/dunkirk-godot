@@ -1,16 +1,54 @@
-[gd_scene load_steps=8 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=15 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://br8sxenq5s663" path="res://enemy/diver_enemy.tscn" id="3_fc0e3"]
 [ext_resource type="PackedScene" uid="uid://5i67floq2vy4" path="res://menu_assets/hud.tscn" id="4_7jktm"]
 [ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="4_fc0e3"]
+[ext_resource type="AudioStream" uid="uid://dc5uv7878uaw4" path="res://assets/SFX/shot.mp3" id="4_hve3p"]
+[ext_resource type="AudioStream" uid="uid://b14jrbrp7aelc" path="res://assets/SFX/engine.mp3" id="5_iotsf"]
+[ext_resource type="AudioStream" uid="uid://dpq6jar0roqml" path="res://assets/SFX/explode1.mp3" id="5_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://ddabs7a5atycs" path="res://menu_assets/game_over_screen.tscn" id="5_ryrav"]
 [ext_resource type="Texture2D" uid="uid://b5yrdya6bp80w" path="res://assets/subject1.png" id="6_eow3j"]
+[ext_resource type="AudioStream" uid="uid://cvsjrcqrfbxkp" path="res://assets/SFX/explode2.mp3" id="6_iotsf"]
+[ext_resource type="AudioStream" uid="uid://mbdfmybnonds" path="res://assets/SFX/bgmuic.mp3" id="8_lc2xo"]
+[ext_resource type="PackedScene" uid="uid://b0hpjmhh2q4mt" path="res://menu_assets/main_menu.tscn" id="10_iotsf"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eow3j"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(270, 1, 1)
+direction = Vector3(0, -2, 0)
+spread = 0.0
+initial_velocity_min = -500.0
+initial_velocity_max = -500.0
+gravity = Vector3(0, 0, 0)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_feb5d")
 enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3")])
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="GunSound" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("4_hve3p")
+volume_db = -5.0
+
+[node name="EngineSound" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("5_iotsf")
+volume_db = -8.0
+parameters/looping = true
+
+[node name="HitSound" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("5_mfdv2")
+
+[node name="ExplodeSound" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("6_iotsf")
+
+[node name="BgSound" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("8_lc2xo")
+parameters/looping = true
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -18,6 +56,9 @@ enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"
 
 [node name="GameOverScreen" parent="UILayer" instance=ExtResource("5_ryrav")]
 visible = false
+
+[node name="MainMenu" parent="UILayer" instance=ExtResource("10_iotsf")]
+process_mode = 3
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -30,6 +71,11 @@ texture = ExtResource("6_eow3j")
 centered = false
 region_enabled = true
 region_rect = Rect2(1779, 464, 540, 960)
+
+[node name="WindParticles" type="GPUParticles2D" parent="."]
+position = Vector2(270, -7)
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_eow3j")
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
