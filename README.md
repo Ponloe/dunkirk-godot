@@ -6,12 +6,16 @@ The game places the player in the cockpit of an elite pilot squadron tasked with
 This project explores classic arcade mechanics combined with pixel-art visuals and modern game development tools.
 
 ---
-## Link for gameplay
-- https://youtu.be/rWm5cBLhl1o
-- Beta test - https://jazzy-stardust-ed12e1.netlify.app/dunkirk.html
 
-## Link for google form
-- https://forms.gle/pnWv7vsZuZbKd1AH8
+## Link for Gameplay
+- https://youtu.be/rWm5cBLhl1o  
+- Beta Test: https://jazzy-stardust-ed12e1.netlify.app/dunkirk.html  
+
+## Link for Google Form
+- https://forms.gle/pnWv7vsZuZbKd1AH8  
+
+---
+
 ## Visual Style & Theme
 
 ### Visual Style
@@ -56,34 +60,15 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 
 ## Gameplay Loop
 
-### Start
-- Mission briefing introduces objectives and controls
-- Short tutorial
-
 ### Early Game
 - Simple enemy aircraft
 - Core shooting mechanics
 
 ### Mid Game
-- Increased enemy formations
-- Power-ups:
-  - Fire rate boost
-  - Spread shots
-  - Shields
+- Increased enemy 
 
 ### Late Game
-- Elite enemy squadrons
-- Heavy bombers
-- Dense projectile combat requiring evasive maneuvering
-
-### Final Stage
-- Multi-phase boss encounter
-- Score summary and completion screen
-
-### Endless Mode
-- Infinite escalating enemies
-- Continuous power-ups
-- Survival-focused scoring
+- Even more enemies 
 
 ---
 
@@ -103,19 +88,58 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 
 ---
 
+## References & Resources
+
+### Visual & Environment Assets
+- Free Sky with Clouds Background Pixel Art Set  
+  https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set
+
+- Free Pixel Art Cloud and Sky Backgrounds  
+  https://free-game-assets.itch.io/free-pixel-art-cloud-and-sky-backgrounds
+
+- Pixel Planes Assets Pack  
+  https://clavs.itch.io/pixel-planes-assets-pack
+
+- Map Asset (Selidovo)  
+  https://firefight-map-nyb.itch.io/mapselidovo
+
+### Tutorials & Learning Resources
+- Godot 2D Shooter Tutorial  
+  https://www.youtube.com/watch?v=m8dJ6ssLkc8
+
+### Sound Effects (SFX)
+- Heavy Machine Gun (.50 Cal)  
+  https://pixabay.com/sound-effects/film-special-effects-066496-heavy-machine-gun-50-caliber-28243/
+
+- Retro Explosion 1  
+  https://pixabay.com/sound-effects/film-special-effects-retro-explode-1-236678/
+
+- Retro Explosion 2  
+  https://pixabay.com/sound-effects/film-special-effects-retro-explode-2-236688/
+
+- Prop Plane Engine Sound  
+  https://pixabay.com/sound-effects/city-prop-plane-14513/
+
+- Meaty Gunshot  
+  https://pixabay.com/sound-effects/film-special-effects-meaty-gunshot-101257/
+
+### Background Music
+- Retro Arcade / Shooter Background Music  
+  https://www.youtube.com/watch?v=VEwht-yY5Yg&list=RDVEwht-yY5Yg&start_radio=1
+
+---
+
 ## AI Usage
 
 AI tools were used to assist with:
 - Concept discussion and refinement (Gemini + GPT)
 - Documentation drafting (GPT + Perplexity)
 - Iterative design planning (GPT)
-- Google Form Questions (Grok)
-- Drafting message to send out for beta testing
-- Small bug fixes in the code (Claude)
+- Google Form question drafting (Grok)
+- Drafting messages for beta testing
+- Small bug fixes and code suggestions (Claude)
 
 ---
 
 ## Project Status
 This project is under active development. Features and gameplay elements may change as development progresses.
-
-
