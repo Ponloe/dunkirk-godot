@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=16 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://2a5ylgc44fwm" path="res://enemy/zig_zag_enemy.tscn" id="4_215e1"]
 [ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="4_fc0e3"]
 [ext_resource type="AudioStream" uid="uid://dc5uv7878uaw4" path="res://assets/SFX/shot.mp3" id="4_hve3p"]
-[ext_resource type="PackedScene" uid="uid://lrmo5fes3i4v" path="res://enemy/intercepter_enemy.tscn" id="5_7sc4i"]
 [ext_resource type="AudioStream" uid="uid://b14jrbrp7aelc" path="res://assets/SFX/engine.mp3" id="5_iotsf"]
 [ext_resource type="AudioStream" uid="uid://dpq6jar0roqml" path="res://assets/SFX/explode1.mp3" id="5_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://ddabs7a5atycs" path="res://menu_assets/game_over_screen.tscn" id="5_ryrav"]
@@ -29,7 +28,7 @@ gravity = Vector3(0, 0, 0)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_feb5d")
-enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"), ExtResource("4_215e1"), ExtResource("5_7sc4i")])
+enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"), ExtResource("4_215e1")])
 
 [node name="SFX" type="Node" parent="."]
 
