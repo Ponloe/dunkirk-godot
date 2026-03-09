@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://2a5ylgc44fwm"]
+
+[ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="1_r78us"]
+[ext_resource type="Script" uid="uid://68n6enwqwhtg" path="res://enemy/zig_zag_enemy.gd" id="2_iogtr"]
+
+[node name="ZigZagEnemy" instance=ExtResource("1_r78us")]
+script = ExtResource("2_iogtr")
+amplitude = 100.0
+frequency = 5.0
+hp = 1
+
+[node name="Sprite2D" parent="." index="0"]
+region_rect = Rect2(129, 1, 30, 30)

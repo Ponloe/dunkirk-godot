@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://lrmo5fes3i4v"]
+
+[ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="1_lnfli"]
+[ext_resource type="Script" uid="uid://d1e5f1vxak2p1" path="res://enemy/intercepter_enemy.gd" id="2_dt5vg"]
+
+[node name="IntercepterEnemy" instance=ExtResource("1_lnfli")]
+script = ExtResource("2_dt5vg")
+horizontal_speed = 100.0
+
+[node name="Sprite2D" parent="." index="0"]
+region_rect = Rect2(97, 1, 30, 30)

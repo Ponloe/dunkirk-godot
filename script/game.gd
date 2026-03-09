@@ -18,11 +18,26 @@ extends Node2D
 @onready var explode_sound = $SFX/ExplodeSound
 @onready var bg_sound = $SFX/BgSound
 
+
+const V_FORMATION_OFFSETS = [
+	Vector2(0, 0),      # The Lead (Tip of V)
+	Vector2(-70, -60),  # Left Wing 1
+	Vector2(70, -60),   # Right Wing 1
+	Vector2(-140, -120),# Left Wing 2
+	Vector2(140, -120)  # Right Wing 2
+]
+
+var next_formation_milestone = 1000
+
 var player = null 
 var score := 0:
 	set(value):
 		score = value     
 		hud.score = score
+		
+		if score >= next_formation_milestone:
+			spawn_v_formation()
+			next_formation_milestone += 1000
 
 var high_score 
 
@@ -107,3 +122,33 @@ func _on_player_killed():
 	save_game()
 	await get_tree().create_timer(1.5).timeout
 	gos.visible = true
+	
+
+func spawn_v_formation():
+	# 1. Find the DiverEnemy in your array. 
+	# (Assumption: It's the one with 'diver' in the name or at a specific index)
+	var diver_scene = null
+	for scene in enemy_scenes:
+		if "diver" in scene.resource_path.to_lower():
+			diver_scene = scene
+			break
+	
+	# Fallback to random if Diver isn't found
+	if not diver_scene:
+		diver_scene = enemy_scenes.pick_random()
+
+	# 2. Pick a center point for the V
+	# We center it on the screen (assuming screen width is roughly 550 based on your randf)
+	var screen_center_x = 275 
+	var spawn_root_pos = Vector2(screen_center_x, -150)
+
+	# 3. Instantiate 5 enemies at the offset positions
+	for offset in V_FORMATION_OFFSETS:
+		var e = diver_scene.instantiate()
+		e.global_position = spawn_root_pos + offset
+		
+		# Connect the same signals your normal enemies use
+		e.killed.connect(_on_enemy_killed)
+		e.hit.connect(_on_enemy_hit)
+		
+		enemy_container.add_child(e)

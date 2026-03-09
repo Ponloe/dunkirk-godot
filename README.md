@@ -65,11 +65,15 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 - Core shooting mechanics
 
 ### Mid Game
-- Increased enemy 
+- Increased enemy variety with new flight patterns
+- Introduction of Zig-Zag enemies (sine wave movement)
+- More complex dodging required
 
 ### Late Game
 - Even more enemies 
-
+- V-formation squadron spawns every 1000 points
+- Higher density of threats
+- Strategic positioning becomes critical
 ---
 
 ## Inspirations & References
@@ -137,7 +141,7 @@ AI tools were used to assist with:
 - Iterative design planning (GPT)
 - Google Form question drafting (Grok)
 - Drafting messages for beta testing
-- Small bug fixes and code suggestions (Claude)
+- Small bug fixes, code suggestions, and enemy behavior implementation (Claude)
 
 ---
 
