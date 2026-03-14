@@ -179,5 +179,21 @@ All final integration, testing, and project decisions were done manually by the 
 
 ---
 
+## Easter Egg
+
+There is a hidden easter egg in the game.
+
+### How to Trigger
+Enter this key sequence in order:
+
+`Up, Up, Down, Down, Left, Right, Left, Right` with the arrow keys 
+
+### What Happens
+If entered correctly, the game activates a secret surprise effect.
+
+### Notes
+- The sequence must be entered in the correct order.
+- If the sequence is broken, restart the input and try again.
+
 ## Project Status
-This project is under active development. Features and gameplay elements may change as development progresses.
+This project is under active development. Features and gameplay elements may change as development progresses. 
