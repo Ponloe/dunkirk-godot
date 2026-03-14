@@ -35,18 +35,25 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 
 ---
 
-## Assets
+## Asset Credits
 
-### Visual Assets
-- WWII plane sprite packs (aircraft, bullets, explosions)
-- Additional projectile variations
-- Background sky/environment assets
-- Assets sourced from online creators and credited accordingly
+All external assets, audio, and learning references used in this project are credited below.
 
-### Sound Assets
-- Engine and propeller audio
-- Machine gun and explosion effects
-- Retro-style background music
+| Asset | Creator | Source | License / Terms |
+|---|---|---|---|
+| Free Sky with Clouds Background Pixel Art Set | Free Game Assets (Craftpix) | https://free-game-assets.itch.io/free-sky-with-clouds-background-pixel-art-set | Craftpix file license (free + commercial use; redistribution of source files not allowed): https://craftpix.net/file-licenses/ |
+| Free Pixel Art Cloud and Sky Backgrounds | Free Game Assets (Craftpix) | https://free-game-assets.itch.io/free-pixel-art-cloud-and-sky-backgrounds | Craftpix file license (free + commercial use; redistribution of source files not allowed): https://craftpix.net/file-licenses/ |
+| Pixel Planes Assets Pack (planes, bullets, explosion sprites) | Clavs | https://clavs.itch.io/pixel-planes-assets-pack | CC-BY (attribution required) |
+| Free Pixel Effects Pack #4 (explosions) | XYEzawr | https://xyezawr.itch.io/free-pixel-effects-pack-4-explosions | Custom license on page: free/commercial use allowed; credit appreciated; no redistribution/resale |
+| Map "Selidovo" | •°MAP-NYB© | https://firefight-map-nyb.itch.io/mapselidovo | Custom user agreement in archive/page; use requires following author terms/consent |
+| Heavy Machine Gun (.50 Caliber) SFX | Freesound Community (Pixabay uploader: `freesound_community`) | https://pixabay.com/sound-effects/film-special-effects-066496-heavy-machine-gun-50-caliber-28243/ | Pixabay Content License: https://pixabay.com/service/license-summary/ |
+| Retro Explode 1 SFX | Driken5482 | https://pixabay.com/sound-effects/film-special-effects-retro-explode-1-236678/ | Pixabay Content License: https://pixabay.com/service/license-summary/ |
+| Retro Explode 2 SFX | Driken5482 | https://pixabay.com/sound-effects/film-special-effects-retro-explode-2-236688/ | Pixabay Content License: https://pixabay.com/service/license-summary/ |
+| Prop Plane Engine SFX | mozfoo (Freesound) via Pixabay uploader `freesound_community` | https://pixabay.com/sound-effects/city-prop-plane-14513/ | Pixabay Content License: https://pixabay.com/service/license-summary/ |
+| Meaty Gunshot SFX | morganpurkis (Freesound) via Pixabay uploader `freesound_community` | https://pixabay.com/sound-effects/film-special-effects-meaty-gunshot-101257/ | Pixabay Content License: https://pixabay.com/service/license-summary/ |
+| Godot 2D Shooter Tutorial (learning reference) | YouTube creator/uploader of the video | https://www.youtube.com/watch?v=m8dJ6ssLkc8 | Educational reference only; no direct asset license implied |
+| Additional YouTube SFX/BGM reference | YouTube creator/uploader of the video | https://www.youtube.com/watch?v=7olVDwbX8ao | Educational/audio reference only; verify usage rights with uploader/license |
+| Retro Arcade / Shooter Background Music reference | YouTube creator/uploader of the video | https://www.youtube.com/watch?v=VEwht-yY5Yg&list=RDVEwht-yY5Yg&start_radio=1 | Reference link; verify usage rights with uploader/license before commercial distribution |
 
 ---
 
@@ -135,13 +142,40 @@ This project explores classic arcade mechanics combined with pixel-art visuals a
 
 ## AI Usage
 
-AI tools were used to assist with:
-- Concept discussion and refinement (Gemini + GPT)
-- Documentation drafting (GPT + Perplexity)
-- Iterative design planning (GPT)
-- Google Form question drafting (Grok)
-- Drafting messages for beta testing
-- Small bug fixes, code suggestions, and enemy behavior implementation (Claude)
+AI tools were used during development for planning, documentation, code support, and visual ideation.  
+All final integration, testing, and project decisions were done manually by the developer.
+
+### AI Tools Used
+
+| Tool | Purpose |
+|---|---|
+| Gemini | Backdrop generation/visual ideation, concept refinement |
+| ChatGPT (GPT) | Design discussion, implementation planning, debugging support, documentation drafting |
+| Perplexity | Reference lookup and writing support for documentation |
+| Grok | Drafting beta-test messaging and Google Form question phrasing |
+| Claude | Small bug-fix suggestions and enemy behavior implementation ideas |
+
+### Prompts Used (Representative)
+
+| Tool | Prompt (example/representative) |
+|---|---|
+| Gemini | "Generate a retro pixel-art ocean backdrop with islands and ships for a vertical 2D WWII airplane shooter, bright readable colors, seamless feel." |
+| Gemini | "Create variations of the background with clear contrast so player bullets and enemies remain visible." |
+| ChatGPT | "How can I implement zig-zag enemy movement in Godot using sine-wave logic?" |
+| ChatGPT | "Help optimize export size for Godot Web/Windows builds." |
+| ChatGPT | "Draft and improve README sections for gameplay, references, and asset credits." |
+| Perplexity | "Help summarize and structure project documentation and references." |
+| Grok | "Draft concise beta testing questions for a Google Form about gameplay feel and difficulty." |
+
+### What AI Generated 
+
+| Category | What Was AI-Generated | Final Use in Project |
+|---|---|---|
+| Visual | Backdrop concept/generation support (Gemini) | Used as the game backdrop.
+| Code | Code suggestions/snippets for bug fixes and enemy behavior | Manually reviewed, adapted, and integrated into project scripts |
+| Text | README drafts, planning notes, beta-test messaging | Edited and finalized manually |
+| Design Support | Gameplay/design brainstorming and balancing suggestions | Used as guidance only |
+| Music/SFX | None directly generated by AI | External licensed assets were used instead |
 
 ---
 
