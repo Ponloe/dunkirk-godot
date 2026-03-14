@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=17 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b5yrdya6bp80w" path="res://assets/subject1.png" id="6_eow3j"]
 [ext_resource type="AudioStream" uid="uid://cvsjrcqrfbxkp" path="res://assets/SFX/explode2.mp3" id="6_iotsf"]
 [ext_resource type="AudioStream" uid="uid://mbdfmybnonds" path="res://assets/SFX/bgmuic.mp3" id="8_lc2xo"]
+[ext_resource type="AudioStream" uid="uid://bn3ksr7pa0ksg" path="res://assets/SFX/easteregg.mp3" id="10_7sc4i"]
 [ext_resource type="PackedScene" uid="uid://b0hpjmhh2q4mt" path="res://menu_assets/main_menu.tscn" id="10_iotsf"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eow3j"]
@@ -50,6 +51,9 @@ stream = ExtResource("6_iotsf")
 [node name="BgSound" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("8_lc2xo")
 parameters/looping = true
+
+[node name="Easter" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("10_7sc4i")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 

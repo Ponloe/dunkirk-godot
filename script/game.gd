@@ -17,6 +17,7 @@ extends Node2D
 @onready var hit_sound = $SFX/HitSound
 @onready var explode_sound = $SFX/ExplodeSound
 @onready var bg_sound = $SFX/BgSound
+@onready var easter_sound = $SFX/Easter
 
 
 const V_FORMATION_OFFSETS = [
@@ -26,6 +27,14 @@ const V_FORMATION_OFFSETS = [
 	Vector2(-140, -120),# Left Wing 2
 	Vector2(140, -120)  # Right Wing 2
 ]
+
+const EASTER_SEQUENCE = [
+	"ui_up", "ui_up", "ui_down", "ui_down",
+	"ui_left", "ui_right", "ui_left", "ui_right"
+]
+var easter_buffer: Array[String] = []
+var actions_to_check = ["ui_up", "ui_down", "ui_left", "ui_right"]
+var is_easter_playing := false
 
 var next_formation_milestone = 1000
 
@@ -47,7 +56,7 @@ func _ready():
 	main_menu.start_game.connect(_on_main_menu_start_game)
 	bg_sound.play()
 	
-	process_mode = Node.PROCESS_MODE_PAUSABLE
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	bg_sound.process_mode = Node.PROCESS_MODE_ALWAYS
 	engine_sound.stop()
 	timer.stop()
@@ -82,6 +91,12 @@ func _process(delta: float) -> void:
 		get_tree().quit()
 	elif Input.is_action_just_pressed("reset"):
 		get_tree().reload_current_scene()
+	
+	for action in actions_to_check:
+		if Input.is_action_just_pressed(action):
+			_update_easter_buffer(action)
+		
+		
 
 	if not get_tree().paused:
 		if timer.wait_time > 0.5: 
@@ -90,6 +105,7 @@ func _process(delta: float) -> void:
 			timer.wait_time -= 0.45
 		
 		pb.scroll_offset.y += delta * scroll_speed
+	
 
 func _on_player_bullet_shot(bullet_scene, location):
 	var bullet = bullet_scene.instantiate()
@@ -125,30 +141,49 @@ func _on_player_killed():
 	
 
 func spawn_v_formation():
-	# 1. Find the DiverEnemy in your array. 
-	# (Assumption: It's the one with 'diver' in the name or at a specific index)
 	var diver_scene = null
 	for scene in enemy_scenes:
 		if "diver" in scene.resource_path.to_lower():
 			diver_scene = scene
 			break
 	
-	# Fallback to random if Diver isn't found
 	if not diver_scene:
 		diver_scene = enemy_scenes.pick_random()
 
-	# 2. Pick a center point for the V
-	# We center it on the screen (assuming screen width is roughly 550 based on your randf)
 	var screen_center_x = 275 
 	var spawn_root_pos = Vector2(screen_center_x, -150)
 
-	# 3. Instantiate 5 enemies at the offset positions
 	for offset in V_FORMATION_OFFSETS:
 		var e = diver_scene.instantiate()
 		e.global_position = spawn_root_pos + offset
 		
-		# Connect the same signals your normal enemies use
 		e.killed.connect(_on_enemy_killed)
 		e.hit.connect(_on_enemy_hit)
 		
 		enemy_container.add_child(e)
+		
+func _update_easter_buffer(action: String):
+	if is_easter_playing:
+		return
+
+	easter_buffer.append(action)
+	
+	if easter_buffer.size() > EASTER_SEQUENCE.size():
+		easter_buffer.remove_at(0)
+	
+	if easter_buffer == EASTER_SEQUENCE:
+		_trigger_easter_egg()
+		easter_buffer.clear()
+
+func _trigger_easter_egg():
+	easter_sound.play()
+	
+	await get_tree().create_timer(6).timeout
+	
+	var enemies = enemy_container.get_children()
+	for e in enemies:
+		if e.has_method("die"):
+			e.die() 
+	
+	score += 5000
+	is_easter_playing = false
