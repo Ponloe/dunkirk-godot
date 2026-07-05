@@ -72,13 +72,32 @@ label_settings = SubResource("LabelSettings_v4lx4")
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="CharacterSelect" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 469.0
+offset_right = 411.0
+offset_bottom = 658.0
+
+[node name="plane1" type="Button" parent="Panel/CharacterSelect"]
+layout_mode = 2
+text = "Plane 1"
+
+[node name="plane2" type="Button" parent="Panel/CharacterSelect"]
+layout_mode = 2
+text = "Plane 2"
+
+[node name="plane3" type="Button" parent="Panel/CharacterSelect"]
+layout_mode = 2
+text = "Plane 3"
+
 [node name="StartButton" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4112963
-anchor_top = 0.5699584
-anchor_right = 0.6203704
-anchor_bottom = 0.5989583
+anchor_left = 0.40574074
+anchor_top = 0.7064167
+anchor_right = 0.6148148
+anchor_bottom = 0.73541665
 offset_left = -0.1000061
 offset_top = -0.16003418
 offset_right = 4.0
@@ -90,4 +109,7 @@ theme_override_font_sizes/font_size = 24
 text = "Start Game"
 metadata/_edit_use_anchors_ = true
 
+[connection signal="pressed" from="Panel/CharacterSelect/plane1" to="." method="_on_plane_1_pressed"]
+[connection signal="pressed" from="Panel/CharacterSelect/plane2" to="." method="_on_plane_2_pressed"]
+[connection signal="pressed" from="Panel/CharacterSelect/plane3" to="." method="_on_plane_3_pressed"]
 [connection signal="pressed" from="Panel/StartButton" to="." method="_on_start_button_pressed"]

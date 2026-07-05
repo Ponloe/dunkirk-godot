@@ -5,6 +5,11 @@ The game places the player in the cockpit of an elite pilot squadron tasked with
 
 This project explores classic arcade mechanics combined with pixel-art visuals and modern game development tools.
 
+## Development Planning
+
+- Week 1 Game Design Document: [docs/week_1_game_design.md](docs/week_1_game_design.md)
+- Development Backlog: [docs/development_backlog.md](docs/development_backlog.md)
+
 ---
 
 ## Link for Gameplay

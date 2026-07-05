@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bh65v33flykqd"]
+
+[ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_4m78e"]
+
+[node name="player3" instance=ExtResource("1_4m78e")]
+
+[node name="Sprite2D" parent="." index="0"]
+region_rect = Rect2(33, 97, 30, 30)
