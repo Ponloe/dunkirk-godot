@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene load_steps=17 format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://br8sxenq5s663" path="res://enemy/diver_enemy.tscn" id="3_fc0e3"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://mbdfmybnonds" path="res://assets/SFX/bgmuic.mp3" id="8_lc2xo"]
 [ext_resource type="AudioStream" uid="uid://bn3ksr7pa0ksg" path="res://assets/SFX/easteregg.mp3" id="10_7sc4i"]
 [ext_resource type="PackedScene" uid="uid://b0hpjmhh2q4mt" path="res://menu_assets/main_menu.tscn" id="10_iotsf"]
+[ext_resource type="PackedScene" uid="uid://bfagjtcckmxh5" path="res://enemy/boss_enemy.tscn" id="11_boss"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eow3j"]
 lifetime_randomness = 1.0
@@ -29,6 +30,7 @@ gravity = Vector3(0, 0, 0)
 [node name="Game" type="Node2D"]
 script = ExtResource("1_feb5d")
 enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"), ExtResource("4_215e1")])
+boss_scene = ExtResource("11_boss")
 
 [node name="SFX" type="Node" parent="."]
 

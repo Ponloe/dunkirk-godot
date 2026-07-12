@@ -41,8 +41,8 @@ func die() -> void:
 
 	is_dying = true
 
-	monitoring = false
-	monitorable = false
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
 
 	sprite.visible = false
 	collision.set_deferred("disabled", true)

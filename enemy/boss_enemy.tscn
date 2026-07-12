@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfagjtcckmxh5"]
+
+[ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="1_x4qfj"]
+[ext_resource type="Script" uid="uid://diqbo2jwrrbdl" path="res://enemy/boss_enemy.gd" id="2_yulk0"]
+
+[node name="boss_enemy" instance=ExtResource("1_x4qfj")]
+scale = Vector2(1.5, 1.5)
+script = ExtResource("2_yulk0")
+entry_target_y = 170.0
+horizontal_speed = 110.0
+movement_range = 170.0
+movement_frequency = 1.2
+speed = 80.0
+hp = 20
+points = 200
+
+[node name="Sprite2D" parent="." index="0"]
+region_rect = Rect2(1, 65, 30, 30)
