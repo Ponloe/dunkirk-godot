@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_238lq"]
 
 [node name="player2" instance=ExtResource("1_238lq")]
+speed = 450
+rate_of_fire = 0.1
 
 [node name="Sprite2D" parent="." index="0"]
 region_rect = Rect2(65, 65, 30, 30)

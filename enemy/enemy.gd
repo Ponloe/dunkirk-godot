@@ -20,6 +20,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_dying:
 		return
+	
 	global_position.y += speed * delta
 
 func take_damage(amount: int) -> void:
@@ -27,6 +28,7 @@ func take_damage(amount: int) -> void:
 		return
 
 	hp -= amount
+	
 	if hp <= 0:
 		killed.emit(points)
 		die()
@@ -34,23 +36,30 @@ func take_damage(amount: int) -> void:
 		hit.emit()
 
 func die() -> void:
+	if is_dying:
+		return
+
 	is_dying = true
 
-	# Disable enemy visuals and collision
-	sprite.visible = false
-	collision.disabled = true
+	monitoring = false
+	monitorable = false
 
-	# Play explosion
+	sprite.visible = false
+	collision.set_deferred("disabled", true)
+
 	explosion.visible = true
 	explosion.play("explode")
 
-	# Remove enemy after explosion finishes
-	explosion.animation_finished.connect(_on_explosion_finished)
+	if not explosion.animation_finished.is_connected(_on_explosion_finished):
+		explosion.animation_finished.connect(_on_explosion_finished)
 
 func _on_explosion_finished() -> void:
 	queue_free()
 
 func _on_body_entered(body):
+	if is_dying:
+		return
+
 	if body is Player:
 		body.die()
 		die()

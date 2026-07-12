@@ -97,7 +97,6 @@ func _on_main_menu_start_game(selected_player_scene: PackedScene) -> void:
 
 	player.bullet_shot.connect(_on_player_bullet_shot)
 	player.killed.connect(_on_player_killed)
-
 	engine_sound.play()
 	timer.start()
 
@@ -114,7 +113,6 @@ func _process(delta: float) -> void:
 	for action in actions_to_check:
 		if Input.is_action_just_pressed(action):
 			_update_easter_buffer(action)
-
 	if not get_tree().paused:
 		if timer.wait_time > minimum_spawn_wait_time:
 			timer.wait_time = max(minimum_spawn_wait_time, timer.wait_time - delta * spawn_wait_acceleration)
