@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfagjtcckmxh5"]
+[gd_scene load_steps=5 format=3 uid="uid://bfagjtcckmxh5"]
 
 [ext_resource type="PackedScene" uid="uid://cbujtww5505mq" path="res://enemy/Enemy.tscn" id="1_x4qfj"]
 [ext_resource type="Script" uid="uid://diqbo2jwrrbdl" path="res://enemy/boss_enemy.gd" id="2_yulk0"]
+[ext_resource type="Texture2D" path="res://assets/boss_512.png" id="3_boss"]
+[ext_resource type="Script" path="res://player_plane/plane_shadow.gd" id="4_shadow"]
 
 [node name="boss_enemy" instance=ExtResource("1_x4qfj")]
 scale = Vector2(1.5, 1.5)
@@ -10,9 +12,19 @@ entry_target_y = 170.0
 horizontal_speed = 110.0
 movement_range = 170.0
 movement_frequency = 1.2
-speed = 80.0
-hp = 20
-points = 200
+speed = 140.0
+hp = 35
+points = 1500
 
 [node name="Sprite2D" parent="." index="0"]
-region_rect = Rect2(1, 65, 30, 30)
+material = null
+rotation = 0.0
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("3_boss")
+region_enabled = false
+
+[node name="PlaneShadow" type="Node2D" parent="."]
+position = Vector2(0, 76)
+script = ExtResource("4_shadow")
+shadow_width = 58.0
+shadow_height = 11.0

@@ -1,11 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://5i67floq2vy4"]
+[gd_scene load_steps=7 format=3 uid="uid://5i67floq2vy4"]
 
-[ext_resource type="Script" uid="uid://ctarlpqwuxxdi" path="res://menu_assets/hud.gd" id="1_dllc7"]
-[ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="2_c0a6m"]
+[ext_resource type="Script" uid="uid://ctarlpqwuxxdi" path="res://menu_assets/hud.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="2_font"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_hr67a"]
-font = ExtResource("2_c0a6m")
-font_size = 32
+[sub_resource type="LabelSettings" id="LabelSettings_score"]
+font = ExtResource("2_font")
+font_size = 23
+outline_size = 5
+outline_color = Color(0.02, 0.04, 0.08, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_small"]
+font = ExtResource("2_font")
+font_size = 14
+font_color = Color(1, 0.86, 0.46, 1)
+outline_size = 4
+outline_color = Color(0.02, 0.04, 0.08, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss"]
+bg_color = Color(0.02, 0.04, 0.08, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.2, 0.12, 0.95)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
+bg_color = Color(0.9, 0.1, 0.08, 1)
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -14,14 +38,129 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_dllc7")
+mouse_filter = 2
+script = ExtResource("1_script")
 
 [node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = 255.0
+offset_bottom = 44.0
+text = "SCORE: 0"
+label_settings = SubResource("LabelSettings_score")
+
+[node name="KillCounter" type="Label" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 47.0
+offset_right = 250.0
+offset_bottom = 72.0
+text = "DROP: 0/10"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="LevelIntroShade" type="ColorRect" parent="."]
+visible = false
+z_index = 3
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 23.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-scale = Vector2(1.0017359, 1.0046726)
-text = "SCORE: 999"
-label_settings = SubResource("LabelSettings_hr67a")
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.02, 0.04, 0.58)
+
+[node name="LevelIntro" type="Label" parent="."]
+visible = false
+z_index = 4
+layout_mode = 0
+offset_left = 25.0
+offset_top = 420.0
+offset_right = 515.0
+offset_bottom = 510.0
+text = "THE ENGLISH CHANNEL"
+label_settings = SubResource("LabelSettings_score")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lives" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 10.0
+offset_right = 526.0
+offset_bottom = 74.0
+alignment = 2
+
+[node name="Title" type="Label" parent="Lives"]
+layout_mode = 2
+text = "LIVES"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 2
+
+[node name="LivesContainer" type="HBoxContainer" parent="Lives"]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="ActivePowerUps" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 84.0
+offset_right = 525.0
+offset_bottom = 310.0
+theme_override_constants/separation = 3
+
+[node name="BossWarning" type="Label" parent="."]
+visible = false
+z_index = 4
+layout_mode = 0
+offset_left = 40.0
+offset_top = 390.0
+offset_right = 500.0
+offset_bottom = 455.0
+text = "WARNING!\nENEMY ACE APPROACHING"
+label_settings = SubResource("LabelSettings_score")
+horizontal_alignment = 1
+
+[node name="BossWarningShade" type="ColorRect" parent="."]
+visible = false
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.18, 0.0, 0.0, 0.58)
+
+[node name="BossHealth" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 120.0
+offset_top = 82.0
+offset_right = 420.0
+offset_bottom = 122.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_boss")
+
+[node name="HealthText" type="Label" parent="BossHealth"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 1.0
+offset_right = 292.0
+offset_bottom = 18.0
+text = "ENEMY ACE  35/35"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 1
+
+[node name="HealthBar" type="ProgressBar" parent="BossHealth"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 22.0
+offset_right = 292.0
+offset_bottom = 34.0
+max_value = 35.0
+value = 35.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxFlat_health")

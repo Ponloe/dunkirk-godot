@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://power_up.gd" id="1_power"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_power"]
+radius = 30.0
+
+[node name="PowerUp" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_power")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.12, 0.12)
+
+[node name="Glow" type="PointLight2D" parent="."]
+energy = 0.45
+texture_scale = 0.6
+color = Color(1, 0.72, 0.25, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_power")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

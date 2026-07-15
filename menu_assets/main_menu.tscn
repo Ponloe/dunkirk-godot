@@ -1,16 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0hpjmhh2q4mt"]
+[gd_scene load_steps=12 format=3 uid="uid://b0hpjmhh2q4mt"]
 
 [ext_resource type="Script" uid="uid://c1tg8k2nnnshs" path="res://main_menu.gd" id="1_5gaqd"]
 [ext_resource type="Texture2D" uid="uid://bra50donekpg8" path="res://assets/ui/logo.png" id="2_bppw2"]
 [ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="2_u2k3h"]
+[ext_resource type="Texture2D" path="res://assets/plane1_512.png" id="4_planes"]
+[ext_resource type="Texture2D" path="res://assets/ocean.png" id="6_ocean"]
+[ext_resource type="Texture2D" path="res://assets/controls_transparent.png" id="7_controls"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_bppw2"]
-font = ExtResource("2_u2k3h")
-font_size = 45
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.02, 0.035, 0.055, 0.86)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.93, 0.74, 0.34, 0.82)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="LabelSettings" id="LabelSettings_v4lx4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.08, 0.12, 0.16, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(1, 0.64, 0.14, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_small"]
 font = ExtResource("2_u2k3h")
-font_size = 20
+font_size = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_gold"]
+font = ExtResource("2_u2k3h")
+font_size = 18
+font_color = Color(1, 0.86, 0.48, 1)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -28,7 +58,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.5372549)
+color = Color(0, 0, 0, 0.58)
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -40,88 +70,354 @@ grow_vertical = 2
 
 [node name="Logo" type="TextureRect" parent="Panel"]
 layout_mode = 0
-offset_left = 9.0
-offset_top = 64.0
-offset_right = 530.0
-offset_bottom = 262.0
+offset_left = 30.0
+offset_top = 25.0
+offset_right = 510.0
+offset_bottom = 208.0
 texture = ExtResource("2_bppw2")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Title" type="Label" parent="Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.07777778
-anchor_top = 0.28441668
-anchor_right = 0.9203704
-anchor_bottom = 0.308375
-offset_left = -20.0
-offset_top = -23.04
-offset_right = 20.0
-offset_bottom = -0.040000916
-grow_horizontal = 2
-text = "Dunkirk Battle of The Skies"
-label_settings = SubResource("LabelSettings_bppw2")
-metadata/_edit_use_anchors_ = true
-
-[node name="Controls" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.38148147
-anchor_top = 0.821875
-anchor_right = 0.63703704
-anchor_bottom = 0.93645835
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "Controls 
-
-WASD to Move
-Space to Shoot"
-label_settings = SubResource("LabelSettings_v4lx4")
-horizontal_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="CharacterSelect" type="VBoxContainer" parent="Panel"]
+[node name="ChoosePlane" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 143.0
-offset_top = 380.0
-offset_right = 411.0
-offset_bottom = 507.0
+offset_left = 120.0
+offset_top = 218.0
+offset_right = 420.0
+offset_bottom = 242.0
+text = "CHOOSE YOUR AIRCRAFT"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="CharacterSelect" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 250.0
+offset_right = 465.0
+offset_bottom = 286.0
+theme_override_constants/separation = 8
 
 [node name="plane1" type="Button" parent="Panel/CharacterSelect"]
+custom_minimum_size = Vector2(124, 36)
 layout_mode = 2
 text = "Plane 1"
 
 [node name="plane2" type="Button" parent="Panel/CharacterSelect"]
+custom_minimum_size = Vector2(124, 36)
 layout_mode = 2
 text = "Plane 2"
 
 [node name="plane3" type="Button" parent="Panel/CharacterSelect"]
+custom_minimum_size = Vector2(124, 36)
 layout_mode = 2
 text = "Plane 3"
 
+[node name="PreviewPanel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 298.0
+offset_right = 465.0
+offset_bottom = 508.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="PreviewTitle" type="Label" parent="Panel/PreviewPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 374.0
+offset_bottom = 34.0
+text = "AIRCRAFT LOADOUT"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="PlanePreview" type="Sprite2D" parent="Panel/PreviewPanel"]
+texture_filter = 1
+position = Vector2(94, 98)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("4_planes")
+
+[node name="SelectedPlaneLabel" type="Label" parent="Panel/PreviewPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 168.0
+offset_right = 374.0
+offset_bottom = 194.0
+text = "PLANE 1  |  3 LIVES"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="Stats" type="VBoxContainer" parent="Panel/PreviewPanel"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 52.0
+offset_right = 365.0
+offset_bottom = 158.0
+theme_override_constants/separation = 8
+
+[node name="Speed" type="HBoxContainer" parent="Panel/PreviewPanel/Stats"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/PreviewPanel/Stats/Speed"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "SPEED"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="Bar" type="ProgressBar" parent="Panel/PreviewPanel/Stats/Speed"]
+custom_minimum_size = Vector2(85, 16)
+layout_mode = 2
+max_value = 500.0
+value = 300.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+
+[node name="Value" type="Label" parent="Panel/PreviewPanel/Stats/Speed"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+text = "300"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 2
+
+[node name="FireRate" type="HBoxContainer" parent="Panel/PreviewPanel/Stats"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/PreviewPanel/Stats/FireRate"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "FIRE"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="Bar" type="ProgressBar" parent="Panel/PreviewPanel/Stats/FireRate"]
+custom_minimum_size = Vector2(85, 16)
+layout_mode = 2
+max_value = 10.0
+value = 5.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+
+[node name="Value" type="Label" parent="Panel/PreviewPanel/Stats/FireRate"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+text = "5.0/s"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 2
+
+[node name="Control" type="HBoxContainer" parent="Panel/PreviewPanel/Stats"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Panel/PreviewPanel/Stats/Control"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "CONTROL"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="Bar" type="ProgressBar" parent="Panel/PreviewPanel/Stats/Control"]
+custom_minimum_size = Vector2(85, 16)
+layout_mode = 2
+max_value = 5.0
+value = 3.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+
+[node name="Value" type="Label" parent="Panel/PreviewPanel/Stats/Control"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+text = "3/5"
+label_settings = SubResource("LabelSettings_small")
+horizontal_alignment = 2
+
+[node name="MapPanel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 520.0
+offset_right = 465.0
+offset_bottom = 704.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Title" type="Label" parent="Panel/MapPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 374.0
+offset_bottom = 34.0
+text = "SELECT BATTLEFIELD"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="MapPreview" type="TextureRect" parent="Panel/MapPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 44.0
+offset_right = 178.0
+offset_bottom = 144.0
+texture = ExtResource("6_ocean")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="SelectedMapLabel" type="Label" parent="Panel/MapPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 148.0
+offset_right = 178.0
+offset_bottom = 174.0
+text = "OCEAN"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="MapButtons" type="VBoxContainer" parent="Panel/MapPanel"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 46.0
+offset_right = 370.0
+offset_bottom = 169.0
+theme_override_constants/separation = 6
+
+[node name="Ocean" type="Button" parent="Panel/MapPanel/MapButtons"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Ocean"
+
+[node name="Grassland" type="Button" parent="Panel/MapPanel/MapButtons"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Grassland"
+
+[node name="Desert" type="Button" parent="Panel/MapPanel/MapButtons"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+text = "Desert"
+
+[node name="ReadyLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 752.0
+offset_right = 420.0
+offset_bottom = 778.0
+text = "READY FOR TAKEOFF"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
 [node name="StartButton" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.40944445
-anchor_top = 0.69600004
-anchor_right = 0.61851853
-anchor_bottom = 0.725
-offset_left = -0.1000061
-offset_top = -0.16003418
-offset_right = 4.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_left = 155.0
+offset_top = 780.0
+offset_right = 385.0
+offset_bottom = 828.0
 theme_override_fonts/font = ExtResource("2_u2k3h")
 theme_override_font_sizes/font_size = 24
-text = "Start Game"
-metadata/_edit_use_anchors_ = true
+text = "START GAME"
+
+[node name="PilotRow" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 712.0
+offset_right = 435.0
+offset_bottom = 746.0
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/PilotRow"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "PILOT NAME"
+label_settings = SubResource("LabelSettings_small")
+vertical_alignment = 1
+
+[node name="PilotName" type="LineEdit" parent="Panel/PilotRow"]
+custom_minimum_size = Vector2(205, 34)
+layout_mode = 2
+max_length = 12
+placeholder_text = "ROOKIE"
+
+[node name="LeaderboardButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 836.0
+offset_right = 365.0
+offset_bottom = 874.0
+text = "LEADERBOARD"
+
+[node name="Controls" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 884.0
+offset_right = 365.0
+offset_bottom = 924.0
+text = "CONTROLS"
+
+[node name="LeaderboardOverlay" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_left = 55.0
+offset_top = 215.0
+offset_right = 485.0
+offset_bottom = 785.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Title" type="Label" parent="Panel/LeaderboardOverlay"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 22.0
+offset_right = 410.0
+offset_bottom = 54.0
+text = "TOP PILOTS"
+label_settings = SubResource("LabelSettings_gold")
+horizontal_alignment = 1
+
+[node name="Entries" type="Label" parent="Panel/LeaderboardOverlay"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 78.0
+offset_right = 395.0
+offset_bottom = 480.0
+text = "NO MISSIONS RECORDED"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="Close" type="Button" parent="Panel/LeaderboardOverlay"]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 505.0
+offset_right = 295.0
+offset_bottom = 548.0
+text = "CLOSE"
+
+[node name="ControlsOverlay" type="Panel" parent="Panel"]
+visible = false
+z_index = 10
+layout_mode = 0
+offset_left = 45.0
+offset_top = 70.0
+offset_right = 495.0
+offset_bottom = 890.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Artwork" type="TextureRect" parent="Panel/ControlsOverlay"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 442.0
+offset_bottom = 764.0
+texture = ExtResource("7_controls")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Close" type="Button" parent="Panel/ControlsOverlay"]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 770.0
+offset_right = 305.0
+offset_bottom = 810.0
+text = "CLOSE"
 
 [connection signal="pressed" from="Panel/CharacterSelect/plane1" to="." method="_on_plane_1_pressed"]
 [connection signal="pressed" from="Panel/CharacterSelect/plane2" to="." method="_on_plane_2_pressed"]
 [connection signal="pressed" from="Panel/CharacterSelect/plane3" to="." method="_on_plane_3_pressed"]
+[connection signal="pressed" from="Panel/MapPanel/MapButtons/Ocean" to="." method="_on_ocean_pressed"]
+[connection signal="pressed" from="Panel/MapPanel/MapButtons/Grassland" to="." method="_on_grassland_pressed"]
+[connection signal="pressed" from="Panel/MapPanel/MapButtons/Desert" to="." method="_on_desert_pressed"]
 [connection signal="pressed" from="Panel/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Panel/LeaderboardButton" to="." method="_on_leaderboard_pressed"]
+[connection signal="pressed" from="Panel/LeaderboardOverlay/Close" to="." method="_on_close_leaderboard_pressed"]
+[connection signal="pressed" from="Panel/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="Panel/ControlsOverlay/Close" to="." method="_on_close_controls_pressed"]

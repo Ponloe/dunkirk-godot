@@ -6,6 +6,3 @@
 [node name="IntercepterEnemy" instance=ExtResource("1_lnfli")]
 script = ExtResource("2_dt5vg")
 horizontal_speed = 100.0
-
-[node name="Sprite2D" parent="." index="0"]
-region_rect = Rect2(97, 1, 30, 30)

@@ -1,35 +1,39 @@
-[gd_scene load_steps=7 format=3 uid="uid://ddabs7a5atycs"]
+[gd_scene load_steps=6 format=3 uid="uid://ddabs7a5atycs"]
 
-[ext_resource type="Script" uid="uid://tn6ihhbu5tem" path="res://menu_assets/game_over_screen.gd" id="1_kw64r"]
-[ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="1_ugfv1"]
+[ext_resource type="Script" uid="uid://tn6ihhbu5tem" path="res://menu_assets/game_over_screen.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://b8k6u7mti22jm" path="res://assets/font/font.ttf" id="2_font"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kw64r"]
-bg_color = Color(0.5412435, 0.63453174, 0.5028326, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.02, 0.035, 0.055, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.95, 0.62, 0.16, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
-[sub_resource type="LabelSettings" id="LabelSettings_tgg6y"]
-font = ExtResource("1_ugfv1")
-font_size = 60
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("2_font")
+font_size = 42
+font_color = Color(1, 0.48, 0.16, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_gl671"]
-font = ExtResource("1_ugfv1")
-font_size = 36
-
-[sub_resource type="LabelSettings" id="LabelSettings_tlhp2"]
-font = ExtResource("1_ugfv1")
-font_size = 36
+[sub_resource type="LabelSettings" id="LabelSettings_text"]
+font = ExtResource("2_font")
+font_size = 19
+font_color = Color(1, 0.9, 0.62, 1)
 
 [node name="GameOverScreen" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_kw64r")
+script = ExtResource("1_script")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -38,81 +42,125 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.5372549)
+color = Color(0, 0, 0, 0.72)
 
 [node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -280.0
-offset_right = 226.0
-offset_bottom = 220.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kw64r")
+layout_mode = 0
+offset_left = 45.0
+offset_top = 65.0
+offset_right = 495.0
+offset_bottom = 895.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="GameOver" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -90.0
-offset_top = 54.0
-offset_right = 92.0
-offset_bottom = 100.0
-grow_horizontal = 2
-text = "Game Over"
-label_settings = SubResource("LabelSettings_tgg6y")
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 28.0
+offset_right = 425.0
+offset_bottom = 82.0
+text = "MISSION FAILED"
+label_settings = SubResource("LabelSettings_title")
 horizontal_alignment = 1
 
-[node name="HighScore" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -125.0
-offset_top = 180.0
-offset_right = 124.0
-offset_bottom = 226.0
-grow_horizontal = 2
-text = "High Score: 99999"
-label_settings = SubResource("LabelSettings_gl671")
+[node name="Pilot" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 105.0
+offset_right = 425.0
+offset_bottom = 132.0
+text = "PILOT: ROOKIE"
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1
+
+[node name="Loadout" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 138.0
+offset_right = 425.0
+offset_bottom = 165.0
+text = "PLANE 1  |  OCEAN"
+label_settings = SubResource("LabelSettings_text")
 horizontal_alignment = 1
 
 [node name="Score" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -91.0
-offset_top = 240.0
-offset_right = 91.0
-offset_bottom = 286.0
-grow_horizontal = 2
-text = "Score: 99999"
-label_settings = SubResource("LabelSettings_tlhp2")
+layout_mode = 0
+offset_left = 25.0
+offset_top = 195.0
+offset_right = 425.0
+offset_bottom = 224.0
+text = "MISSION SCORE: 0"
+label_settings = SubResource("LabelSettings_text")
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -94.0
-offset_top = 93.0
-offset_right = 94.0
-offset_bottom = 142.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_ugfv1")
-theme_override_font_sizes/font_size = 25
-text = "RETRY
-"
+[node name="HighScore" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 232.0
+offset_right = 425.0
+offset_bottom = 261.0
+text = "PERSONAL BEST: 0"
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1
 
-[connection signal="pressed" from="Panel/RestartButton" to="." method="_on_restart_button_pressed"]
+[node name="Rank" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 269.0
+offset_right = 425.0
+offset_bottom = 298.0
+text = "TOP 10 RANK: --"
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1
+
+[node name="LeaderboardTitle" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 332.0
+offset_right = 425.0
+offset_bottom = 360.0
+text = "TOP PILOTS"
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1
+
+[node name="Leaderboard" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 375.0
+offset_right = 395.0
+offset_bottom = 530.0
+text = "NO MISSIONS RECORDED"
+label_settings = SubResource("LabelSettings_text")
+
+[node name="RetryButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 565.0
+offset_right = 360.0
+offset_bottom = 620.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+text = "RETRY MISSION"
+
+[node name="LoadoutButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 635.0
+offset_right = 360.0
+offset_bottom = 690.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 21
+text = "CHANGE LOADOUT"
+
+[node name="MainMenuButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 705.0
+offset_right = 360.0
+offset_bottom = 760.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 21
+text = "MAIN MENU"
+
+[connection signal="pressed" from="Panel/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Panel/LoadoutButton" to="." method="_on_loadout_button_pressed"]
+[connection signal="pressed" from="Panel/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

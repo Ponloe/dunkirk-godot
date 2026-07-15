@@ -6,6 +6,3 @@
 speed = 300
 hp = 1
 points = 100
-
-[node name="Sprite2D" parent="." index="0"]
-region_rect = Rect2(33, 1, 30, 30)

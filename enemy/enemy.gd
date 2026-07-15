@@ -1,7 +1,7 @@
 class_name Enemy
 extends Area2D
 
-signal killed(points)
+signal killed(points, drop_position)
 signal hit
 
 @export var speed: float = 150
@@ -30,7 +30,7 @@ func take_damage(amount: int) -> void:
 	hp -= amount
 	
 	if hp <= 0:
-		killed.emit(points)
+		killed.emit(points, global_position)
 		die()
 	else:
 		hit.emit()
@@ -48,6 +48,7 @@ func die() -> void:
 	collision.set_deferred("disabled", true)
 
 	explosion.visible = true
+	explosion.speed_scale = 1.05
 	explosion.play("explode")
 
 	if not explosion.animation_finished.is_connected(_on_explosion_finished):
@@ -61,7 +62,7 @@ func _on_body_entered(body):
 		return
 
 	if body is Player:
-		body.die()
+		body.take_hit()
 		die()
 
 func _on_visible_on_screen_notifier_2d_screen_exited():

@@ -1,10 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://bh65v33flykqd"]
+[gd_scene load_steps=3 format=3 uid="uid://bh65v33flykqd"]
 
 [ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_4m78e"]
+[ext_resource type="Texture2D" path="res://assets/plane3_512.png" id="2_plane"]
 
 [node name="player3" instance=ExtResource("1_4m78e")]
 speed = 200
 rate_of_fire = 0.5
+control_rating = 5
+max_lives = 4
+propeller_positions = Array[Vector2]([Vector2(-18, -31), Vector2(18, -31)])
+propeller_blade_length = 10.0
 
 [node name="Sprite2D" parent="." index="0"]
-region_rect = Rect2(33, 97, 30, 30)
+scale = Vector2(0.26, 0.26)
+texture = ExtResource("2_plane")

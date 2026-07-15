@@ -1,8 +1,7 @@
-[gd_scene load_steps=40 format=3 uid="uid://cbujtww5505mq"]
+[gd_scene load_steps=38 format=3 uid="uid://cbujtww5505mq"]
 
 [ext_resource type="Script" uid="uid://b7aay1fd1kib6" path="res://enemy/enemy.gd" id="1_5p6bu"]
-[ext_resource type="Shader" uid="uid://bnaw0agwskbf3" path="res://shaders/shader.gdshader" id="1_7lgfl"]
-[ext_resource type="Texture2D" uid="uid://dub4ti8835uqu" path="res://assets/PixelPlanesAssetPack.png" id="2_5p6bu"]
+[ext_resource type="Texture2D" path="res://assets/enemy1_512.png" id="2_5p6bu"]
 [ext_resource type="Texture2D" uid="uid://5qfc1bnvof3m" path="res://assets/explosion/2/frames/1_0.png" id="4_l7ide"]
 [ext_resource type="Texture2D" uid="uid://ddw2ulwflt4fa" path="res://assets/explosion/2/frames/1_1.png" id="5_w6m8v"]
 [ext_resource type="Texture2D" uid="uid://c254i8adn3i4p" path="res://assets/explosion/2/frames/1_2.png" id="6_20r4c"]
@@ -36,10 +35,6 @@
 [ext_resource type="Texture2D" uid="uid://ucpqvyy2blvm" path="res://assets/explosion/2/frames/1_30.png" id="34_ncm2u"]
 [ext_resource type="Texture2D" uid="uid://dv14aiyw1jnms" path="res://assets/explosion/2/frames/1_31.png" id="35_m5hqo"]
 [ext_resource type="Texture2D" uid="uid://clrhsf7qjm3o6" path="res://assets/explosion/2/frames/1_32.png" id="36_rf6r4"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_80fio"]
-shader = ExtResource("1_7lgfl")
-shader_parameter/remove_color = Color(0.5176471, 0.49411765, 0.5294118, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_80fio"]
 radius = 31.016125
@@ -159,13 +154,11 @@ hp = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-material = SubResource("ShaderMaterial_80fio")
 position = Vector2(1.0000076, 3.8146973e-06)
-rotation = 3.1415927
-scale = Vector2(3.5, 3.5)
+rotation = 0.0
+scale = Vector2(0.22, 0.22)
 texture = ExtResource("2_5p6bu")
-region_enabled = true
-region_rect = Rect2(33, 33, 30, 30)
+region_enabled = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 8)
@@ -182,6 +175,7 @@ sprite_frames = SubResource("SpriteFrames_yvy5n")
 animation = &"explode"
 frame = 32
 frame_progress = 1.0
+
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

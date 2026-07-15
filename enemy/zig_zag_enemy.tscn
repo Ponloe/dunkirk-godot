@@ -8,6 +8,3 @@ script = ExtResource("2_iogtr")
 amplitude = 100.0
 frequency = 5.0
 hp = 1
-
-[node name="Sprite2D" parent="." index="0"]
-region_rect = Rect2(129, 1, 30, 30)
