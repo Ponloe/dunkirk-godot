@@ -14,11 +14,6 @@ script = ExtResource("1_power")
 texture_filter = 1
 scale = Vector2(0.12, 0.12)
 
-[node name="Glow" type="PointLight2D" parent="."]
-energy = 0.45
-texture_scale = 0.6
-color = Color(1, 0.72, 0.25, 1)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_power")
 

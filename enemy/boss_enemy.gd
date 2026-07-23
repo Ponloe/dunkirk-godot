@@ -7,16 +7,15 @@ signal battle_started
 
 @export_category("Boss Movement")
 @export var entry_target_y := 170.0
-@export var horizontal_speed := 110.0
 @export var movement_range := 170.0
 @export var movement_frequency := 1.2
 
 @export_category("Boss Attacks")
 @export var enemy_bullet_scene: PackedScene = preload("res://enemy/enemy_bullet.tscn")
-@export var attack_interval := 1.7
-@export var phase_two_attack_interval := 0.9
-@export var bullet_speed := 270.0
-@export var phase_two_bullet_speed := 340.0
+@export var attack_interval := 1.9
+@export var phase_two_attack_interval := 1.2
+@export var bullet_speed := 245.0
+@export var phase_two_bullet_speed := 300.0
 
 var movement_time := 0.0
 var center_x := 0.0
@@ -24,6 +23,7 @@ var has_entered := false
 var max_hp := 1
 var attack_cooldown := 1.0
 var attack_pattern_index := 0
+var phase_two_announced := false
 
 
 func _ready() -> void:
@@ -52,6 +52,9 @@ func take_damage(amount: int) -> void:
 		return
 
 	super.take_damage(amount)
+	if _is_phase_two() and not phase_two_announced and not is_dying:
+		phase_two_announced = true
+		_play_phase_change()
 
 	if not is_dying:
 		health_changed.emit(hp, max_hp)
@@ -64,7 +67,7 @@ func _enter_battlefield(delta: float) -> void:
 		global_position.y = entry_target_y
 		center_x = global_position.x
 		has_entered = true
-		attack_cooldown = 1.0
+		attack_cooldown = 1.35
 		battle_started.emit()
 		health_changed.emit(hp, max_hp)
 
@@ -121,6 +124,15 @@ func _fire_fan() -> void:
 
 func _is_phase_two() -> bool:
 	return hp <= max_hp / 2
+
+
+func _play_phase_change() -> void:
+	var original_scale := sprite.scale
+	sprite.self_modulate = Color(1.8, 0.45, 0.3, 1.0)
+	var tween := create_tween()
+	tween.tween_property(sprite, "scale", original_scale * 1.12, 0.14)
+	tween.tween_property(sprite, "scale", original_scale, 0.2)
+	tween.parallel().tween_property(sprite, "self_modulate", type_tint, 0.2)
 
 
 func _on_body_entered(body: Node2D) -> void:

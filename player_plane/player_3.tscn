@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" path="res://assets/plane3_512.png" id="2_plane"]
 
 [node name="player3" instance=ExtResource("1_4m78e")]
-speed = 200
-rate_of_fire = 0.5
+speed = 250
+rate_of_fire = 0.3
 control_rating = 5
 max_lives = 4
 propeller_positions = Array[Vector2]([Vector2(-18, -31), Vector2(18, -31)])

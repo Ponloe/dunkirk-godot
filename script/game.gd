@@ -29,6 +29,8 @@ extends Node2D
 @export_category("Other Settings")
 @export var parallax_scroll_speed := 100.0
 @export var easter_egg_score_bonus := 5000
+@export var combo_window := 3.0
+@export var mission_boss_target := 3
 
 
 @onready var player_spawn_pos = $PlayerSpawnPos
@@ -40,10 +42,13 @@ extends Node2D
 @onready var main_menu = $UILayer/MainMenu
 @onready var hud = $UILayer/HUD
 @onready var gos = $UILayer/GameOverScreen
+@onready var pause_menu = $UILayer/PauseMenu
+@onready var mission_complete = $UILayer/MissionComplete
 @onready var pb = $ParallaxBackground
 @onready var background_layer: ParallaxLayer = $ParallaxBackground/ParallaxLayer
 @onready var background_sprite: Sprite2D = $ParallaxBackground/ParallaxLayer/cloud
 @onready var map_effects: Node2D = $MapEffects
+@onready var game_camera: Camera2D = $Camera2D
 
 @onready var gun_sound = $SFX/GunSound
 @onready var engine_sound = $SFX/EngineSound
@@ -105,7 +110,7 @@ var actions_to_check = [
 var is_easter_playing := false
 
 var next_formation_milestone := 1000
-var next_boss_milestone := 2000
+var next_boss_milestone := 6000
 
 var boss_active := false
 var current_boss = null
@@ -117,6 +122,19 @@ var enemies_defeated := 0
 var last_power_up_type := ""
 var current_map_id := "ocean"
 var wave_index := 0
+var bosses_defeated := 0
+var combo_count := 0
+var combo_time_remaining := 0.0
+var last_player_lives := 0
+var mission_milestone_shown := false
+var highest_combo := 0
+var run_time := 0.0
+var bombs_used := 0
+var player_hit_during_boss := false
+var shake_time_remaining := 0.0
+var shake_strength := 0.0
+var game_over_pending := false
+var bomb_clear_active := false
 
 
 var score := 0:
@@ -126,6 +144,11 @@ var score := 0:
 
 		if score > high_score:
 			high_score = score
+
+		if score >= GameData.SECRET_PLANE_UNLOCK_SCORE:
+			if GameData.unlock_secret_plane():
+				hud.show_secret_plane_unlocked()
+		_check_score_medals()
 
 		# Boss is checked first so a formation does not spawn
 		# at the same milestone as a boss.
@@ -138,6 +161,12 @@ func _ready() -> void:
 	next_boss_milestone = first_boss_score
 
 	main_menu.start_game.connect(_on_main_menu_start_game)
+	main_menu.map_selected.connect(_on_main_menu_map_selected)
+	pause_menu.resume_requested.connect(_on_pause_resume_requested)
+	pause_menu.restart_requested.connect(_on_pause_restart_requested)
+	pause_menu.main_menu_requested.connect(_on_pause_main_menu_requested)
+	mission_complete.continue_requested.connect(_on_continue_endless_requested)
+	mission_complete.finish_requested.connect(_on_finish_mission_requested)
 
 	bg_sound.play()
 
@@ -155,6 +184,8 @@ func _ready() -> void:
 	main_menu.visible = true
 	hud.visible = false
 	gos.visible = false
+	pause_menu.visible = false
+	mission_complete.visible = false
 	get_tree().paused = true
 
 	if GameData.auto_start_on_reload:
@@ -185,6 +216,15 @@ func _on_main_menu_start_game(
 	score = 0
 	enemies_defeated = 0
 	wave_index = 0
+	bosses_defeated = 0
+	combo_count = 0
+	combo_time_remaining = 0.0
+	mission_milestone_shown = false
+	highest_combo = 0
+	run_time = 0.0
+	bombs_used = 0
+	player_hit_during_boss = false
+	game_over_pending = false
 	current_map_id = selected_map_id
 	difficulty_multiplier = 1.0
 	hud.set_kill_progress(0, guaranteed_drop_kills)
@@ -203,6 +243,7 @@ func _on_main_menu_start_game(
 		player.queue_free()
 
 	player = selected_player_scene.instantiate()
+	player.process_mode = Node.PROCESS_MODE_PAUSABLE
 	player.global_position = player_spawn_pos.global_position
 
 	player.bullet_shot.connect(_on_player_bullet_shot)
@@ -211,23 +252,25 @@ func _on_main_menu_start_game(
 	player.power_up_started.connect(hud.show_power_up)
 	player.power_up_ended.connect(hud.hide_power_up)
 	player.bomb_requested.connect(_on_player_bomb_requested)
+	player.hit_received.connect(_on_player_hit_received)
 
 	add_child(player)
+	last_player_lives = player.current_lives
 	hud.set_lives(player.current_lives, player.max_lives)
+	hud.set_combo(0, 1.0)
 
 	engine_sound.play()
 	timer.wait_time = wave_interval
 	timer.start()
+	_show_start_guidance()
 
 
-func save_game() -> void:
-	var save_file = FileAccess.open(
-		"user://save.data",
-		FileAccess.WRITE
-	)
+func _on_main_menu_map_selected(map_id: String) -> void:
+	if not main_menu.visible:
+		return
 
-	if save_file != null:
-		save_file.store_32(high_score)
+	current_map_id = map_id
+	_apply_selected_map(map_id)
 
 
 func _process(delta: float) -> void:
@@ -238,17 +281,20 @@ func _process(delta: float) -> void:
 	)
 
 	if not is_entering_text:
-		if Input.is_action_just_pressed("quit"):
-			get_tree().reload_current_scene()
-
-		elif Input.is_action_just_pressed("reset"):
-			get_tree().reload_current_scene()
+		if Input.is_action_just_pressed("pause"):
+			_toggle_pause_menu()
 
 		for action in actions_to_check:
 			if Input.is_action_just_pressed(action):
 				_update_easter_buffer(action)
 
 	if not get_tree().paused:
+		run_time += delta
+		if combo_time_remaining > 0.0:
+			combo_time_remaining = maxf(0.0, combo_time_remaining - delta)
+			if combo_time_remaining <= 0.0:
+				_reset_combo()
+
 		if not boss_active:
 			if timer.wait_time > minimum_spawn_wait_time:
 				timer.wait_time = max(
@@ -260,8 +306,52 @@ func _process(delta: float) -> void:
 				)
 
 
-	# Keep the seamless battlefield moving behind the paused menu screens.
-	pb.scroll_offset.y += delta * parallax_scroll_speed
+	if not pause_menu.visible and not game_over_pending:
+		_scroll_background(delta)
+	if not get_tree().paused:
+		if shake_time_remaining > 0.0:
+			shake_time_remaining -= delta
+			game_camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
+		else:
+			shake_strength = 0.0
+			game_camera.offset = game_camera.offset.lerp(Vector2.ZERO, minf(1.0, delta * 18.0))
+
+
+func _toggle_pause_menu() -> void:
+	if main_menu.visible or gos.visible or mission_complete.visible or game_over_pending:
+		return
+
+	if pause_menu.visible:
+		_on_pause_resume_requested()
+	else:
+		get_tree().paused = true
+		pause_menu.open()
+
+
+func _on_pause_resume_requested() -> void:
+	pause_menu.close()
+	get_tree().paused = false
+
+
+func _on_pause_restart_requested() -> void:
+	GameData.auto_start_on_reload = true
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+
+func _on_pause_main_menu_requested() -> void:
+	GameData.auto_start_on_reload = false
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+
+func _show_start_guidance() -> void:
+	await get_tree().create_timer(3.1, false).timeout
+	if player == null or not is_instance_valid(player):
+		return
+
+	if GameData.mark_guidance_seen("basic_controls"):
+		hud.show_tip("WASD TO MOVE\nSPACE TO FIRE", 3.5)
 
 
 func _on_player_bullet_shot(
@@ -298,11 +388,11 @@ func _spawn_structured_wave() -> void:
 
 	match current_map_id:
 		"grassland":
-			pattern_names = ["columns", "staggered", "v"]
+			pattern_names = ["columns", "support", "v", "armored"]
 		"desert":
-			pattern_names = ["diagonal", "zigzag", "line"]
+			pattern_names = ["diagonal", "kamikaze", "line", "gunship"]
 		_:
-			pattern_names = ["v", "line", "patrol"]
+			pattern_names = ["v", "line", "patrol", "gunship", "kamikaze"]
 
 	var pattern := pattern_names[wave_index % pattern_names.size()]
 	var offsets := _get_wave_offsets(pattern)
@@ -318,6 +408,10 @@ func _spawn_structured_wave() -> void:
 
 func _get_wave_offsets(pattern: String) -> Array:
 	match pattern:
+		"armored", "gunship", "support":
+			return [Vector2(-105, 0), Vector2(105, 0)]
+		"kamikaze":
+			return [Vector2(-145, 0), Vector2(0, -55), Vector2(145, 0)]
 		"line":
 			return HORIZONTAL_LINE_OFFSETS
 		"columns", "staggered":
@@ -332,7 +426,11 @@ func _get_wave_enemy_scene(pattern: String) -> PackedScene:
 	var keyword := ""
 	if pattern in ["v", "diagonal"]:
 		keyword = "diver"
-	elif pattern in ["patrol", "zigzag", "staggered"]:
+	elif pattern in ["armored", "kamikaze", "gunship", "support"]:
+		keyword = pattern
+	elif pattern == "patrol":
+		keyword = "intercepter"
+	elif pattern in ["zigzag", "staggered"]:
 		keyword = "zig"
 
 	for enemy_scene in enemy_scenes:
@@ -349,6 +447,8 @@ func _spawn_wave_enemy(enemy_scene: PackedScene, spawn_position: Vector2) -> voi
 	enemy.modulate = _get_level_enemy_tint()
 	enemy.killed.connect(_on_enemy_killed.bind(basic_drop_chance))
 	enemy.hit.connect(_on_enemy_hit)
+	if enemy.has_signal("bullet_fired"):
+		enemy.bullet_fired.connect(_on_boss_bullet_fired)
 	enemy_container.add_child(enemy)
 
 
@@ -378,21 +478,20 @@ func _apply_enemy_difficulty(enemy) -> void:
 		roundi(enemy.hp * hp_multiplier)
 	)
 
-	enemy.points = max(
-		1,
-		roundi(enemy.points * difficulty_multiplier)
-	)
-
-
 func _on_enemy_killed(
 	points: int,
 	drop_position: Vector2,
 	drop_chance: float
 ) -> void:
-	hit_sound.play()
-	score += points
+	explode_sound.play()
+	if bomb_clear_active:
+		score += maxi(1, roundi(float(points) * 0.5))
+	else:
+		_award_combo_score(points)
 	enemies_defeated += 1
 	hud.set_kill_progress(enemies_defeated, guaranteed_drop_kills)
+	if bomb_clear_active:
+		return
 
 	var guaranteed_drop := (
 		guaranteed_drop_kills > 0
@@ -405,6 +504,34 @@ func _on_enemy_killed(
 
 func _on_enemy_hit() -> void:
 	hit_sound.play()
+
+
+func _award_combo_score(base_points: int) -> void:
+	combo_count += 1
+	combo_time_remaining = combo_window
+	var multiplier := minf(3.0, 1.0 + floorf(float(combo_count) / 5.0) * 0.25)
+	highest_combo = maxi(highest_combo, combo_count)
+	score += roundi(float(base_points) * multiplier)
+	hud.set_combo(combo_count, multiplier)
+	if combo_count >= 25:
+		_show_achievement("combo_25", "MEDAL EARNED\n25 ENEMY COMBO")
+
+
+func _check_score_medals() -> void:
+	for milestone in [25000, 50000, 75000, 100000]:
+		if score >= milestone:
+			_show_achievement("score_%d" % milestone, "MEDAL EARNED\n%d POINTS" % milestone)
+
+
+func _show_achievement(achievement_id: String, message: String) -> void:
+	if GameData.unlock_achievement(achievement_id):
+		hud.show_tip(message, 3.0)
+
+
+func _reset_combo() -> void:
+	combo_count = 0
+	combo_time_remaining = 0.0
+	hud.set_combo(0, 1.0)
 
 
 # ---------------------------------------------------------
@@ -433,8 +560,10 @@ func _check_boss_milestone() -> void:
 
 func _begin_boss_encounter() -> void:
 	timer.stop()
+	player_hit_during_boss = false
+	_prepare_player_for_boss()
 	hud.show_boss_warning()
-	await get_tree().create_timer(boss_warning_duration).timeout
+	await get_tree().create_timer(boss_warning_duration, false).timeout
 	hud.hide_boss_warning()
 
 	if player == null or not is_instance_valid(player):
@@ -475,6 +604,7 @@ func _spawn_boss() -> void:
 		return
 
 	current_boss = boss
+	_apply_boss_progression(boss)
 
 	var screen_center_x := (
 		get_viewport_rect().size.x / 2.0
@@ -490,9 +620,46 @@ func _spawn_boss() -> void:
 	boss.hit.connect(_on_enemy_hit)
 	boss.bullet_fired.connect(_on_boss_bullet_fired)
 	boss.health_changed.connect(hud.show_boss_health)
+	boss.battle_started.connect(_on_boss_battle_started.bind(boss))
 
 	enemy_container.add_child(boss)
-	hud.show_boss_health(boss.hp, boss.max_hp)
+
+
+func _on_boss_battle_started(boss: BossEnemy) -> void:
+	if boss == current_boss and is_instance_valid(boss):
+		hud.show_boss_health(boss.hp, boss.max_hp)
+
+
+func _prepare_player_for_boss() -> void:
+	if player == null or not is_instance_valid(player):
+		return
+
+	if player.current_lives < player.max_lives:
+		player.heal(1)
+	else:
+		player.activate_shield()
+
+
+func _apply_boss_progression(boss: BossEnemy) -> void:
+	var progression_hp := mini(50, 35 + bosses_defeated * 5)
+	var shots_per_second: float = 1.0 / player.rate_of_fire
+	if player.default_twin_cannons:
+		shots_per_second *= 2.0
+	var damage_ratio := shots_per_second / 5.0
+	var plane_health_modifier := clampf(pow(damage_ratio, 0.35), 0.8, 1.2)
+	var mobility_modifier := clampf(float(player.speed) / 300.0, 0.85, 1.1)
+
+	boss.hp = clampi(
+		int(round(float(progression_hp) * plane_health_modifier)),
+		24,
+		50
+	)
+	boss.attack_interval = maxf(1.45, 1.9 - bosses_defeated * 0.12)
+	boss.phase_two_attack_interval = maxf(0.95, 1.2 - bosses_defeated * 0.07)
+	boss.bullet_speed = minf(325.0, 245.0 + bosses_defeated * 15.0) * mobility_modifier
+	boss.phase_two_bullet_speed = minf(350.0, 300.0 + bosses_defeated * 12.0) * mobility_modifier
+	boss.movement_range = minf(175.0, 155.0 + bosses_defeated * 5.0)
+	boss.movement_frequency = minf(1.35, 1.05 + bosses_defeated * 0.07)
 
 
 func _on_boss_bullet_fired(
@@ -519,15 +686,20 @@ func _on_boss_killed(points: int, drop_position: Vector2) -> void:
 	if not boss_active:
 		return
 
-	hit_sound.play()
+	explode_sound.play()
+	_start_screen_shake(0.45, 10.0)
 
 	# Keep boss_active true while adding the reward.
 	# This prevents a V-formation from spawning immediately
 	# because of the boss reward.
 	score += points
+	if not player_hit_during_boss:
+		_show_achievement("flawless_boss", "MEDAL EARNED\nFLAWLESS BOSS")
 	enemies_defeated += 1
 	hud.set_kill_progress(enemies_defeated, guaranteed_drop_kills)
 	_spawn_power_up(drop_position)
+	if player != null and is_instance_valid(player):
+		player.heal(1)
 	hud.hide_boss_health()
 
 	# Move the next boss milestone forward.
@@ -535,14 +707,61 @@ func _on_boss_killed(points: int, drop_position: Vector2) -> void:
 
 	# Increase difficulty after every defeated boss.
 	difficulty_multiplier += difficulty_increase_per_boss
+	bosses_defeated += 1
 
 	current_boss = null
 	boss_active = false
 
 	# Skip any formation milestone passed by the boss reward.
 	_advance_formation_milestone()
+	if bosses_defeated >= mission_boss_target and not mission_milestone_shown:
+		mission_milestone_shown = true
+		call_deferred("_show_mission_milestone")
+		return
 
 	timer.start()
+
+
+func _show_mission_milestone() -> void:
+	timer.stop()
+	_clear_container(enemy_container)
+	_clear_container(bullet_container)
+	_clear_container(power_up_container)
+	if player != null and is_instance_valid(player):
+		player.controls_enabled = false
+		player.process_mode = Node.PROCESS_MODE_ALWAYS
+	mission_complete.set_mission_target(mission_boss_target)
+	mission_complete.visible = true
+	get_tree().paused = true
+
+
+func _on_continue_endless_requested() -> void:
+	mission_complete.visible = false
+	if player != null and is_instance_valid(player):
+		player.controls_enabled = true
+		player.process_mode = Node.PROCESS_MODE_PAUSABLE
+	get_tree().paused = false
+	timer.start()
+	hud.show_endless_ribbon()
+
+
+func _clear_container(container: Node) -> void:
+	for child in container.get_children():
+		child.queue_free()
+
+
+func _on_finish_mission_requested() -> void:
+	mission_complete.visible = false
+	timer.stop()
+	hud.visible = false
+	engine_sound.stop()
+	var leaderboard_rank := GameData.submit_score(score)
+	if bombs_used == 0:
+		_show_achievement("no_bombs", "MEDAL EARNED\nNO BOMBS USED")
+	high_score = GameData.get_high_score()
+	gos.show_results(score, leaderboard_rank, true, _get_run_stats())
+	gos.visible = true
+	get_tree().paused = true
 
 
 func _advance_formation_milestone() -> void:
@@ -619,10 +838,18 @@ func spawn_v_formation() -> void:
 # ---------------------------------------------------------
 
 func _on_player_killed() -> void:
+	if game_over_pending:
+		return
+	game_over_pending = true
 	timer.stop()
+	boss_active = false
 	hud.hide_boss_warning()
 	hud.hide_boss_health()
 	hud.visible = false
+	pause_menu.close()
+	_clear_container(enemy_container)
+	_clear_container(bullet_container)
+	_clear_container(power_up_container)
 
 	engine_sound.stop()
 	bg_sound.stop()
@@ -630,16 +857,26 @@ func _on_player_killed() -> void:
 
 	var leaderboard_rank := GameData.submit_score(score)
 	high_score = GameData.get_high_score()
-	gos.show_results(score, leaderboard_rank)
+	gos.show_results(score, leaderboard_rank, false, _get_run_stats())
+	get_tree().paused = true
 
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1.2, true).timeout
 
 	gos.visible = true
-	get_tree().paused = true
 
 
 func _on_player_lives_changed(current_lives: int, max_lives: int) -> void:
 	hud.set_lives(current_lives, max_lives)
+	if current_lives < last_player_lives:
+		_reset_combo()
+		if GameData.mark_guidance_seen("lives"):
+			hud.show_tip("HEART LOST\nBRIEF INVINCIBILITY ACTIVE")
+	last_player_lives = current_lives
+
+
+func _on_player_hit_received(_blocked_by_shield: bool) -> void:
+	if boss_active:
+		player_hit_during_boss = true
 
 
 # ---------------------------------------------------------
@@ -655,6 +892,8 @@ func _spawn_power_up(drop_position: Vector2) -> void:
 	last_power_up_type = power_up.power_up_type
 	power_up.global_position = drop_position
 	power_up_container.add_child(power_up)
+	if GameData.mark_guidance_seen("power_ups"):
+		hud.show_tip("POWER-UP SPOTTED\nCOLLECT IT BEFORE IT ESCAPES")
 
 
 func _pick_power_up_type() -> String:
@@ -684,11 +923,29 @@ func _pick_power_up_type() -> String:
 
 
 func _on_player_bomb_requested() -> void:
+	bombs_used += 1
+	_start_screen_shake(0.35, 8.0)
+	bomb_clear_active = true
 	for enemy in enemy_container.get_children():
 		if enemy == current_boss:
 			enemy.take_damage(5)
 		else:
 			enemy.take_damage(9999)
+	bomb_clear_active = false
+
+
+func _start_screen_shake(duration: float, strength: float) -> void:
+	shake_time_remaining = maxf(shake_time_remaining, duration)
+	shake_strength = maxf(shake_strength, strength)
+
+
+func _get_run_stats() -> Dictionary:
+	return {
+		"enemies": enemies_defeated,
+		"combo": highest_combo,
+		"bosses": bosses_defeated,
+		"time": run_time
+	}
 
 
 # ---------------------------------------------------------
@@ -728,6 +985,16 @@ func _apply_square_map(map_texture: Texture2D) -> void:
 	background_layer.motion_mirroring = Vector2(0, tile_height)
 
 
+func _scroll_background(delta: float) -> void:
+	if background_sprite.texture == null:
+		return
+	var region := background_sprite.region_rect
+	var texture_height := float(background_sprite.texture.get_height())
+	var texture_scroll := delta * parallax_scroll_speed / maxf(background_sprite.scale.y, 0.001)
+	region.position.y = fposmod(region.position.y - texture_scroll, texture_height)
+	background_sprite.region_rect = region
+
+
 # ---------------------------------------------------------
 # EASTER EGG
 # ---------------------------------------------------------
@@ -750,7 +1017,7 @@ func _trigger_easter_egg() -> void:
 	is_easter_playing = true
 	easter_sound.play()
 
-	await get_tree().create_timer(6).timeout
+	await get_tree().create_timer(6, false).timeout
 
 	var enemies = enemy_container.get_children()
 

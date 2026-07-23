@@ -16,22 +16,76 @@ font_color = Color(1, 0.86, 0.46, 1)
 outline_size = 4
 outline_color = Color(0.02, 0.04, 0.08, 0.9)
 
+[sub_resource type="LabelSettings" id="LabelSettings_boss_compact"]
+font = ExtResource("2_font")
+font_size = 10
+font_color = Color(1, 0.82, 0.38, 1)
+outline_size = 2
+outline_color = Color(0.01, 0.02, 0.04, 0.95)
+
+[sub_resource type="LabelSettings" id="LabelSettings_toast"]
+font = ExtResource("2_font")
+font_size = 12
+font_color = Color(0.92, 0.94, 0.96, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ribbon_title"]
+font = ExtResource("2_font")
+font_size = 13
+font_color = Color(1, 0.72, 0.25, 1)
+outline_size = 3
+outline_color = Color(0.01, 0.02, 0.04, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ribbon_subtitle"]
+font = ExtResource("2_font")
+font_size = 8
+font_color = Color(0.83, 0.87, 0.9, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss"]
-bg_color = Color(0.02, 0.04, 0.08, 0.88)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.95, 0.2, 0.12, 0.95)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.015, 0.03, 0.055, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.76, 0.43, 0.14, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health"]
-bg_color = Color(0.9, 0.1, 0.08, 1)
+bg_color = Color(0.92, 0.16, 0.09, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_bg"]
+bg_color = Color(0.12, 0.14, 0.16, 0.95)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip"]
+bg_color = Color(0.015, 0.04, 0.07, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.48, 0.58, 0.66, 0.75)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ribbon"]
+bg_color = Color(0.015, 0.035, 0.06, 0.9)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.78, 0.48, 0.16, 0.85)
 
 [node name="HUD" type="Control"]
+process_mode = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -56,7 +110,17 @@ offset_left = 15.0
 offset_top = 47.0
 offset_right = 250.0
 offset_bottom = 72.0
-text = "DROP: 0/10"
+text = "SUPPLY: 0/15"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="Combo" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 15.0
+offset_top = 75.0
+offset_right = 260.0
+offset_bottom = 102.0
+text = "COMBO 2  x1.00"
 label_settings = SubResource("LabelSettings_small")
 
 [node name="LevelIntroShade" type="ColorRect" parent="."]
@@ -137,30 +201,112 @@ color = Color(0.18, 0.0, 0.0, 0.58)
 
 [node name="BossHealth" type="Panel" parent="."]
 visible = false
+z_index = 2
 layout_mode = 0
-offset_left = 120.0
-offset_top = 82.0
-offset_right = 420.0
-offset_bottom = 122.0
+offset_left = 185.0
+offset_top = 8.0
+offset_right = 355.0
+offset_bottom = 42.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_boss")
 
 [node name="HealthText" type="Label" parent="BossHealth"]
 layout_mode = 0
-offset_left = 8.0
+offset_left = 6.0
 offset_top = 1.0
-offset_right = 292.0
-offset_bottom = 18.0
-text = "ENEMY ACE  35/35"
-label_settings = SubResource("LabelSettings_small")
+offset_right = 164.0
+offset_bottom = 17.0
+text = "ACE  35 / 35"
+label_settings = SubResource("LabelSettings_boss_compact")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HealthBar" type="ProgressBar" parent="BossHealth"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 22.0
-offset_right = 292.0
-offset_bottom = 34.0
-max_value = 35.0
-value = 35.0
+offset_left = 7.0
+offset_top = 21.0
+offset_right = 163.0
+offset_bottom = 29.0
+max_value = 32.0
+value = 32.0
 show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_health_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_health")
+
+[node name="EndlessRibbon" type="Panel" parent="."]
+visible = false
+z_index = 5
+layout_mode = 0
+offset_left = 155.0
+offset_top = 78.0
+offset_right = 385.0
+offset_bottom = 122.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ribbon")
+
+[node name="Accent" type="ColorRect" parent="EndlessRibbon"]
+layout_mode = 1
+anchors_preset = 13
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_right = 4.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.36, 0.06, 1)
+
+[node name="Title" type="Label" parent="EndlessRibbon"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 3.0
+offset_right = 224.0
+offset_bottom = 24.0
+text = "ENDLESS SORTIE"
+label_settings = SubResource("LabelSettings_ribbon_title")
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="EndlessRibbon"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 24.0
+offset_right = 224.0
+offset_bottom = 39.0
+text = "ENEMY FORCES INCREASING"
+label_settings = SubResource("LabelSettings_ribbon_subtitle")
+horizontal_alignment = 1
+
+[node name="TipPanel" type="Panel" parent="."]
+visible = false
+z_index = 5
+layout_mode = 0
+offset_left = 105.0
+offset_top = 118.0
+offset_right = 435.0
+offset_bottom = 176.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tip")
+
+[node name="Accent" type="ColorRect" parent="TipPanel"]
+layout_mode = 1
+anchors_preset = 13
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_right = 5.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.48, 0.1, 1)
+
+[node name="Tip" type="Label" parent="TipPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 5.0
+offset_right = -9.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "WASD TO MOVE\nSPACE TO FIRE"
+label_settings = SubResource("LabelSettings_toast")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

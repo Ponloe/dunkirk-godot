@@ -9,9 +9,8 @@
 scale = Vector2(1.5, 1.5)
 script = ExtResource("2_yulk0")
 entry_target_y = 170.0
-horizontal_speed = 110.0
-movement_range = 170.0
-movement_frequency = 1.2
+movement_range = 155.0
+movement_frequency = 1.05
 speed = 140.0
 hp = 35
 points = 1500

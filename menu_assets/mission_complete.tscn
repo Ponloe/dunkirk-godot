@@ -1,0 +1,161 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://menu_assets/mission_complete.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/font/font.ttf" id="2_font"]
+[ext_resource type="Theme" path="res://menu_assets/wwii_theme.tres" id="3_theme"]
+[ext_resource type="Texture2D" path="res://assets/mission_accomplished_frame.png" id="4_frame"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.025, 0.045, 0.06, 0.97)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.56, 0.12, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_clear"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_hover"]
+bg_color = Color(1, 0.72, 0.25, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="MissionComplete" type="Control"]
+visible = false
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_script")
+
+[node name="Shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.01, 0.02, 0.58)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 540.0
+offset_bottom = 960.0
+theme_override_styles/panel = SubResource("StyleBox_clear")
+
+[node name="Frame" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_frame")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="HeaderBand" type="ColorRect" parent="Panel"]
+visible = false
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 427.0
+offset_bottom = 118.0
+mouse_filter = 2
+color = Color(1, 0.42, 0.06, 0.14)
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 153.0
+offset_right = 464.0
+offset_bottom = 221.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(1, 0.68, 0.16, 1)
+text = "MISSION ACCOMPLISHED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Objective" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 318.0
+offset_right = 458.0
+offset_bottom = 363.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.88, 0.5, 1)
+text = "THREE ENEMY ACES DEFEATED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 370.0
+offset_right = 458.0
+offset_bottom = 484.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 0.9, 0.62, 1)
+text = "RETURN HOME WITH YOUR VICTORY\nOR CONTINUE THE ENDLESS SORTIE."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChoicePrompt" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 558.0
+offset_right = 458.0
+offset_bottom = 625.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 17
+theme_override_colors/font_color = Color(0.76, 0.79, 0.78, 1)
+text = "SELECT YOUR NEXT ORDER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Continue" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 690.0
+offset_right = 436.0
+offset_bottom = 749.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_colors/font_hover_color = Color(1, 0.64, 0.18, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_styles/normal = SubResource("StyleBox_clear")
+theme_override_styles/hover = SubResource("StyleBox_hover")
+theme_override_styles/pressed = SubResource("StyleBox_hover")
+text = "CONTINUE ENDLESS"
+
+[node name="Finish" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 800.0
+offset_right = 436.0
+offset_bottom = 859.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_colors/font_hover_color = Color(1, 0.78, 0.38, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBox_clear")
+theme_override_styles/hover = SubResource("StyleBox_hover")
+theme_override_styles/pressed = SubResource("StyleBox_hover")
+text = "FINISH MISSION"
+
+[connection signal="pressed" from="Panel/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Panel/Finish" to="." method="_on_finish_pressed"]

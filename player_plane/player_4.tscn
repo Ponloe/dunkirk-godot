@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bre20liwnu81o" path="res://player_plane/player.tscn" id="1_base"]
+[ext_resource type="Texture2D" path="res://assets/plane4_512.png" id="2_plane"]
+
+[node name="player4" instance=ExtResource("1_base")]
+speed = 400
+rate_of_fire = 0.16
+control_rating = 2
+max_lives = 2
+propeller_positions = Array[Vector2]([Vector2(-24, -33), Vector2(24, -33)])
+propeller_blade_length = 11.0
+default_twin_cannons = true
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_plane")

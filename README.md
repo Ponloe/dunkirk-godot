@@ -74,6 +74,19 @@ All external assets, audio, and learning references used in this project are cre
 
 ## Gameplay Loop
 
+### Controls
+- `WASD` — Move the aircraft
+- `Space` — Fire weapons
+- `Esc` — Pause or resume the mission
+
+### Mission Systems
+- Choose between four aircraft with different speed, fire rate, handling, and lives.
+- Select the English Channel, French Countryside, or North African Front.
+- Defeat structured enemy waves and collect hearts, weapon upgrades, shields, and bombs.
+- Boss encounters become stronger as the sortie continues.
+- Defeat three enemy aces to finish the mission or continue into endless mode.
+- Reach 100,000 points in one mission to unlock the classified Night Reaper prototype.
+
 ### Early Game
 - Simple enemy aircraft
 - Core shooting mechanics

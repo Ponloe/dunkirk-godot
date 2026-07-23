@@ -8,6 +8,7 @@ signal power_up_started(power_up_type, duration)
 signal power_up_ended(power_up_type)
 signal shield_changed(active)
 signal bomb_requested
+signal hit_received(blocked_by_shield)
 
 @export var speed := 300
 @export var rate_of_fire := 0.2
@@ -16,6 +17,8 @@ signal bomb_requested
 @export var invincibility_duration := 1.5
 @export var propeller_positions: Array[Vector2] = [Vector2(0, -45)]
 @export var propeller_blade_length := 13.0
+@export var default_twin_cannons := false
+@export var screen_margin := Vector2(50.0, 58.0)
 
 @onready var muzzle: Marker2D = $Muzzle
 @onready var sprite: Sprite2D = $Sprite2D
@@ -33,6 +36,8 @@ var spread_shot_active := false
 var twin_cannons_active := false
 var shield_active := false
 var visual_root: Node2D
+var damage_effects: Node2D
+var controls_enabled := true
 
 const PROPELLER_SCRIPT := preload("res://player_plane/propeller.gd")
 
@@ -47,6 +52,9 @@ func _ready() -> void:
 	sprite.reparent(visual_root, false)
 	_create_plane_shadow()
 	_create_propellers()
+	damage_effects = Node2D.new()
+	damage_effects.set_script(preload("res://player_plane/damage_effects.gd"))
+	add_child(damage_effects)
 
 
 func _create_plane_shadow() -> void:
@@ -73,7 +81,7 @@ func _process(delta: float) -> void:
 
 	shoot_cooldown = maxf(0.0, shoot_cooldown - delta)
 
-	if Input.is_action_pressed("shoot") and shoot_cooldown <= 0.0:
+	if controls_enabled and Input.is_action_pressed("shoot") and shoot_cooldown <= 0.0:
 		shoot()
 		shoot_cooldown = current_rate_of_fire
 
@@ -86,30 +94,46 @@ func _process(delta: float) -> void:
 		bank_target,
 		minf(1.0, delta * 10.0)
 	)
+	if controls_enabled:
+		visual_root.position.y = lerpf(visual_root.position.y, 0.0, minf(1.0, delta * 8.0))
+	else:
+		visual_root.position.y = sin(Time.get_ticks_msec() * 0.003) * 2.5
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+	if not controls_enabled:
+		velocity = Vector2.ZERO
+		return
 
-	var direction = Vector2(
+	var direction := Vector2(
 		Input.get_axis("move_left", "move_right"),
 		Input.get_axis("move_up", "move_down")
-	)
+	).limit_length(1.0)
 
-	velocity = direction * speed
+	var target_velocity := direction * speed
+	var handling_response := lerpf(6.0, 18.0, float(control_rating - 1) / 4.0)
+	velocity = velocity.move_toward(
+		target_velocity,
+		float(speed) * handling_response * delta
+	)
 	move_and_slide()
-	global_position = global_position.clamp(Vector2.ZERO, get_viewport_rect().size)
+	var viewport_size := get_viewport_rect().size
+	global_position = global_position.clamp(
+		screen_margin,
+		viewport_size - screen_margin
+	)
 
 
 func shoot() -> void:
 	var origins: Array[Vector2] = [muzzle.global_position]
 	var directions: Array[Vector2] = [Vector2.UP]
 
-	if twin_cannons_active:
+	if twin_cannons_active or default_twin_cannons:
 		origins = [
-			muzzle.global_position + Vector2(-24, 5),
-			muzzle.global_position + Vector2(24, 5)
+			muzzle.global_position + Vector2(-18, 5),
+			muzzle.global_position + Vector2(18, 5)
 		]
 
 	if spread_shot_active:
@@ -132,17 +156,21 @@ func take_hit() -> bool:
 		shield_active = false
 		shield_changed.emit(false)
 		power_up_ended.emit(PowerUp.SHIELD)
+		damage_effects.call("burst")
+		hit_received.emit(true)
 		return true
 
 	current_lives = maxi(0, current_lives - 1)
+	hit_received.emit(false)
 	lives_changed.emit(current_lives, max_lives)
+	damage_effects.call("set_smoke_active", current_lives == 1)
 
 	if current_lives <= 0:
 		die()
 		return true
 
 	is_invincible = true
-	get_tree().create_timer(invincibility_duration).timeout.connect(_end_invincibility)
+	get_tree().create_timer(invincibility_duration, false).timeout.connect(_end_invincibility)
 	return true
 
 
@@ -152,6 +180,7 @@ func heal(amount := 1) -> bool:
 
 	current_lives = mini(max_lives, current_lives + amount)
 	lives_changed.emit(current_lives, max_lives)
+	damage_effects.call("set_smoke_active", current_lives == 1)
 	return true
 
 
@@ -160,7 +189,7 @@ func activate_rapid_fire(duration := 6.0, fire_rate_multiplier := 0.45) -> void:
 	var activation_id := rapid_fire_generation
 	current_rate_of_fire = maxf(0.05, rate_of_fire * fire_rate_multiplier)
 	power_up_started.emit(PowerUp.RAPID_FIRE, duration)
-	await get_tree().create_timer(duration).timeout
+	await get_tree().create_timer(duration, false).timeout
 
 	if is_dead or activation_id != rapid_fire_generation:
 		return
@@ -174,7 +203,7 @@ func activate_spread_shot(duration := 8.0) -> void:
 	var activation_id := spread_shot_generation
 	spread_shot_active = true
 	power_up_started.emit(PowerUp.SPREAD_SHOT, duration)
-	await get_tree().create_timer(duration).timeout
+	await get_tree().create_timer(duration, false).timeout
 
 	if is_dead or activation_id != spread_shot_generation:
 		return
@@ -188,7 +217,7 @@ func activate_twin_cannons(duration := 8.0) -> void:
 	var activation_id := twin_cannons_generation
 	twin_cannons_active = true
 	power_up_started.emit(PowerUp.TWIN_CANNONS, duration)
-	await get_tree().create_timer(duration).timeout
+	await get_tree().create_timer(duration, false).timeout
 
 	if is_dead or activation_id != twin_cannons_generation:
 		return

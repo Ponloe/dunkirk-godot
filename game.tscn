@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://gfaljj7n67a8"]
+[gd_scene format=3 uid="uid://gfaljj7n67a8"]
 
 [ext_resource type="Script" uid="uid://6uq0vl4l7q3c" path="res://script/game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://br8sxenq5s663" path="res://enemy/diver_enemy.tscn" id="3_fc0e3"]
@@ -9,13 +9,20 @@
 [ext_resource type="AudioStream" uid="uid://b14jrbrp7aelc" path="res://assets/SFX/engine.mp3" id="5_iotsf"]
 [ext_resource type="AudioStream" uid="uid://dpq6jar0roqml" path="res://assets/SFX/explode1.mp3" id="5_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://ddabs7a5atycs" path="res://menu_assets/game_over_screen.tscn" id="5_ryrav"]
-[ext_resource type="Texture2D" path="res://assets/ocean.png" id="6_eow3j"]
+[ext_resource type="Texture2D" uid="uid://d3bkjqcuqg5eu" path="res://assets/ocean.png" id="6_eow3j"]
 [ext_resource type="AudioStream" uid="uid://cvsjrcqrfbxkp" path="res://assets/SFX/explode2.mp3" id="6_iotsf"]
 [ext_resource type="AudioStream" uid="uid://mbdfmybnonds" path="res://assets/SFX/bgmuic.mp3" id="8_lc2xo"]
 [ext_resource type="AudioStream" uid="uid://bn3ksr7pa0ksg" path="res://assets/SFX/easteregg.mp3" id="10_7sc4i"]
 [ext_resource type="PackedScene" uid="uid://b0hpjmhh2q4mt" path="res://menu_assets/main_menu.tscn" id="10_iotsf"]
 [ext_resource type="PackedScene" uid="uid://bfagjtcckmxh5" path="res://enemy/boss_enemy.tscn" id="11_boss"]
-[ext_resource type="Script" path="res://background/map_effects.gd" id="12_effects"]
+[ext_resource type="Script" uid="uid://b0bn06b2ylt1t" path="res://background/map_effects.gd" id="12_effects"]
+[ext_resource type="PackedScene" path="res://menu_assets/pause_menu.tscn" id="13_pause"]
+[ext_resource type="PackedScene" path="res://menu_assets/mission_complete.tscn" id="14_complete"]
+[ext_resource type="PackedScene" uid="uid://lrmo5fes3i4v" path="res://enemy/intercepter_enemy.tscn" id="15_interceptor"]
+[ext_resource type="PackedScene" path="res://enemy/armored_enemy.tscn" id="16_armored"]
+[ext_resource type="PackedScene" path="res://enemy/kamikaze_enemy.tscn" id="17_kamikaze"]
+[ext_resource type="PackedScene" path="res://enemy/gunship_enemy.tscn" id="18_gunship"]
+[ext_resource type="PackedScene" path="res://enemy/support_enemy.tscn" id="19_support"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eow3j"]
 lifetime_randomness = 1.0
@@ -28,52 +35,72 @@ initial_velocity_min = -500.0
 initial_velocity_max = -500.0
 gravity = Vector3(0, 0, 0)
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=1072707568]
 script = ExtResource("1_feb5d")
-enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"), ExtResource("4_215e1")])
+enemy_scenes = Array[PackedScene]([ExtResource("4_fc0e3"), ExtResource("3_fc0e3"), ExtResource("4_215e1"), ExtResource("15_interceptor"), ExtResource("16_armored"), ExtResource("17_kamikaze"), ExtResource("18_gunship"), ExtResource("19_support")])
 boss_scene = ExtResource("11_boss")
 
-[node name="SFX" type="Node" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=126324829]
+process_mode = 1
+position = Vector2(270, 480)
+process_callback = 0
 
-[node name="GunSound" type="AudioStreamPlayer" parent="SFX"]
+[node name="SFX" type="Node" parent="." unique_id=261650786]
+process_mode = 1
+
+[node name="GunSound" type="AudioStreamPlayer" parent="SFX" unique_id=214960283]
 stream = ExtResource("4_hve3p")
 volume_db = -5.0
+max_polyphony = 8
+bus = &"SFX"
 
-[node name="EngineSound" type="AudioStreamPlayer" parent="SFX"]
+[node name="EngineSound" type="AudioStreamPlayer" parent="SFX" unique_id=1216722852]
 stream = ExtResource("5_iotsf")
 volume_db = -8.0
+bus = &"SFX"
 parameters/looping = true
 
-[node name="HitSound" type="AudioStreamPlayer" parent="SFX"]
+[node name="HitSound" type="AudioStreamPlayer" parent="SFX" unique_id=2011955650]
 stream = ExtResource("5_mfdv2")
+max_polyphony = 6
+bus = &"SFX"
 
-[node name="ExplodeSound" type="AudioStreamPlayer" parent="SFX"]
+[node name="ExplodeSound" type="AudioStreamPlayer" parent="SFX" unique_id=317923234]
 stream = ExtResource("6_iotsf")
+max_polyphony = 8
+bus = &"SFX"
 
-[node name="BgSound" type="AudioStreamPlayer" parent="SFX"]
+[node name="BgSound" type="AudioStreamPlayer" parent="SFX" unique_id=2072573155]
 stream = ExtResource("8_lc2xo")
-volume_db = -16.56
+volume_db = -8.0
+bus = &"Music"
 parameters/looping = true
 
-[node name="Easter" type="AudioStreamPlayer" parent="SFX"]
+[node name="Easter" type="AudioStreamPlayer" parent="SFX" unique_id=1432067215]
 stream = ExtResource("10_7sc4i")
+bus = &"SFX"
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=130830300]
 
-[node name="HUD" parent="UILayer" instance=ExtResource("4_7jktm")]
+[node name="HUD" parent="UILayer" unique_id=1674727272 instance=ExtResource("4_7jktm")]
 
-[node name="GameOverScreen" parent="UILayer" instance=ExtResource("5_ryrav")]
+[node name="GameOverScreen" parent="UILayer" unique_id=1123114306 instance=ExtResource("5_ryrav")]
 visible = false
 
-[node name="MainMenu" parent="UILayer" instance=ExtResource("10_iotsf")]
+[node name="MainMenu" parent="UILayer" unique_id=93985338 instance=ExtResource("10_iotsf")]
 process_mode = 3
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="PauseMenu" parent="UILayer" unique_id=436167459 instance=ExtResource("13_pause")]
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="MissionComplete" parent="UILayer" unique_id=271926732 instance=ExtResource("14_complete")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1046624402]
+process_mode = 1
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1971599017]
 motion_mirroring = Vector2(0, 540)
 
-[node name="cloud" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+[node name="cloud" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=189850457]
 texture_repeat = 2
 scale = Vector2(0.430622, 0.430622)
 texture = ExtResource("6_eow3j")
@@ -81,27 +108,33 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 1254, 3762)
 
-[node name="MapEffects" type="Node2D" parent="."]
+[node name="MapEffects" type="Node2D" parent="." unique_id=1574466262]
+process_mode = 1
 z_index = -1
 script = ExtResource("12_effects")
 
-[node name="WindParticles" type="GPUParticles2D" parent="."]
+[node name="WindParticles" type="GPUParticles2D" parent="." unique_id=723291375]
+process_mode = 1
 position = Vector2(270, -7)
 amount = 20
 process_material = SubResource("ParticleProcessMaterial_eow3j")
 
-[node name="EnemySpawnTimer" type="Timer" parent="."]
+[node name="EnemySpawnTimer" type="Timer" parent="." unique_id=754795005]
+process_mode = 1
 wait_time = 2.0
 autostart = true
 
-[node name="PlayerSpawnPos" type="Marker2D" parent="."]
+[node name="PlayerSpawnPos" type="Marker2D" parent="." unique_id=1384897679]
 position = Vector2(275, 865)
 gizmo_extents = 30.0
 
-[node name="BulletContainer" type="Node2D" parent="."]
+[node name="BulletContainer" type="Node2D" parent="." unique_id=320734717]
+process_mode = 1
 
-[node name="EnemyContainer" type="Node2D" parent="."]
+[node name="EnemyContainer" type="Node2D" parent="." unique_id=1741853969]
+process_mode = 1
 
-[node name="PowerUpContainer" type="Node2D" parent="."]
+[node name="PowerUpContainer" type="Node2D" parent="." unique_id=1346895310]
+process_mode = 1
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

@@ -24,6 +24,8 @@ const POWER_UP_TEXTURES := {
 @export var rapid_fire_duration := 6.0
 @export var weapon_duration := 8.0
 @export var rapid_fire_multiplier := 0.45
+@export var magnet_range := 150.0
+@export var magnet_speed := 210.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -38,9 +40,15 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	elapsed += delta
-	global_position.y += fall_speed * delta
-	global_position.x = starting_x + sin(elapsed * 3.0) * 10.0
+	var target := get_tree().get_first_node_in_group("player") as Player
+	if target != null and global_position.distance_to(target.global_position) <= magnet_range:
+		global_position = global_position.move_toward(target.global_position, magnet_speed * delta)
+	else:
+		global_position.y += fall_speed * delta
+		global_position.x = starting_x + sin(elapsed * 3.0) * 10.0
 	sprite.rotation = sin(elapsed * 4.0) * 0.06
+	if global_position.y > get_viewport_rect().size.y - 170.0:
+		sprite.modulate.a = 0.35 if int(elapsed * 10.0) % 2 == 0 else 1.0
 
 	if global_position.y > get_viewport_rect().size.y + 80.0:
 		queue_free()

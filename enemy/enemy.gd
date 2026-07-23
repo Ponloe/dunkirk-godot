@@ -7,6 +7,7 @@ signal hit
 @export var speed: float = 150
 @export var hp: int = 1
 @export var points: int = 50
+@export var type_tint := Color.WHITE
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
@@ -16,6 +17,7 @@ var is_dying := false
 
 func _ready() -> void:
 	explosion.visible = false
+	sprite.self_modulate = type_tint
 
 func _physics_process(delta: float) -> void:
 	if is_dying:
@@ -33,7 +35,30 @@ func take_damage(amount: int) -> void:
 		killed.emit(points, global_position)
 		die()
 	else:
+		_flash_hit()
 		hit.emit()
+
+
+func apply_support_boost(speed_multiplier := 1.12) -> bool:
+	if is_dying or has_meta("support_boosted"):
+		return false
+	set_meta("support_boosted", true)
+	speed *= speed_multiplier
+	sprite.modulate = Color(0.72, 1.0, 0.7, 1.0)
+	var tween := create_tween()
+	var original_scale := sprite.scale
+	tween.tween_property(sprite, "scale", original_scale * 1.08, 0.12)
+	tween.tween_property(sprite, "scale", original_scale, 0.16)
+	return true
+
+
+func _flash_hit() -> void:
+	if not is_instance_valid(sprite):
+		return
+
+	sprite.self_modulate = Color(2.2, 2.2, 2.2, 1.0)
+	var tween := create_tween()
+	tween.tween_property(sprite, "self_modulate", type_tint, 0.09)
 
 func die() -> void:
 	if is_dying:
